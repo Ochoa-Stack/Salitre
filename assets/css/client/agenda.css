@@ -1,0 +1,70 @@
+/* Definimos la estructura y estilos globales para 'Agenda' (eventos y experiencias) */
+
+.agenda-hero {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding-top: calc(20px + var(--space-8)); /* Compensa fixed nav */
+    padding-bottom: var(--space-6);
+    margin-bottom: var(--space-6);
+}
+
+.agenda-content .container {
+    max-width: 800px;
+}
+
+.agenda-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.agenda-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--color-accent-light);
+}
+
+.agenda-card__time {
+    padding: var(--space-6);
+    background: var(--color-bg);
+    border-right: 1px solid var(--color-border);
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.agenda-card__day {
+    font-size: var(--text-4xl);
+    line-height: 1;
+    font-family: var(--font-display);
+    display: block;
+}
+
+.agenda-card__body {
+    padding: var(--space-6);
+    flex: 1;
+}
+
+@media (max-width: 600px) {
+    .agenda-card {
+        flex-direction: column;
+    }
+    .agenda-card__time {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        flex-direction: row;
+        align-items: baseline;
+        gap: var(--space-2);
+        padding: var(--space-4);
+    }
+    .agenda-card__day {
+        font-size: var(--text-2xl);
+    }
+    .agenda-card__body {
+        padding: var(--space-5);
+    }
+}

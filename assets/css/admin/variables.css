@@ -1,0 +1,26 @@
+:root {
+  /* Definimos y declaramos la paleta de colores para la parte administrativa */
+  --adm-bg:          #121212;
+  --adm-sidebar-bg:  #121212;
+  --adm-surface:     #1a1a1a;
+  --adm-surface-2:   #222222;
+  --adm-border:      #2a2a2a;
+  --adm-border-2:    #333333;
+  --adm-text:        #F8F8F5;
+  --adm-muted:       #9CA3AF;
+  --adm-accent:      #6C8062;
+  --adm-accent-dim:  rgba(108, 128, 98, 0.15);
+  --adm-danger:      #e05252;
+  --adm-success:     #52b788;
+  --adm-warning:     #e0a952;
+  --adm-info:        #2563EB;
+  --adm-content-bg:  #121212;
+  --adm-content-text: #F8F8F5;
+
+  /* Definimos y declaramos las variables globales y compartidas de la parte administrativa */
+  --sidebar-w: 250px;
+  --radius:    0.375rem;
+  --adm-radius: 0.5rem;
+  --font:      'Inter', system-ui, sans-serif;
+  --adm-font:  'Inter', system-ui, sans-serif;
+}

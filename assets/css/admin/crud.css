@@ -1,0 +1,277 @@
+/* Definimos las variables globales para la página de CRUD del admin */
+
+/* Definimos los estilos para el encabezado de la página */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+.page-header__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--adm-text);
+  letter-spacing: -0.01em;
+}
+
+/* Definimos los estilos para los botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+  white-space: nowrap;
+}
+.btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn--primary  { background: var(--adm-accent); color: #fff; }
+.btn--edit     { background: #3b82f6; color: #ffffff; padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+.btn--danger   { background: var(--adm-danger); color: #ffffff; padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+.btn--ghost    { background: transparent; color: var(--adm-text); border: 1px solid var(--adm-border); }
+
+/* Definimos los estilos para los mensajes flash */
+.flash {
+  padding: 0.75rem 1.125rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+.flash--success { background: #d1fae5 !important; color: #065f46 !important; border: 1px solid #a7f3d0 !important; }
+.flash--error   { background: #fee2e2 !important; color: #991b1b !important; border: 1px solid #fca5a5 !important; }
+.flash--info    { background: #dbeafe !important; color: #1e40af !important; border: 1px solid #93c5fd !important; }
+
+/* Definimos los estilos para la tabla de datos */
+.data-table-wrap {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.data-table thead {
+  background: var(--adm-surface-2);
+  border-bottom: 1px solid var(--adm-border);
+}
+.data-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+.data-table td {
+  padding: 0.75rem 1rem;
+  color: var(--adm-text);
+  border-bottom: 1px solid var(--adm-border);
+  vertical-align: middle;
+}
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--adm-surface-2); }
+
+/* Definimos los estilos para los badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.badge--active   { background: rgba(82, 183, 136, 0.2); color: var(--adm-success); border: 1px solid rgba(82, 183, 136, 0.4); }
+.badge--inactive { background: var(--adm-surface-2); color: var(--adm-muted); border: 1px solid var(--adm-border); }
+
+/* Definimos los estilos para la celda de acciones */
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Definimos los estilos para el estado vacío de la tabla */
+.table-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--adm-muted);
+  font-size: 0.9375rem;
+}
+
+/* Definimos los estilos para la tarjeta de formulario */
+.form-card {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  max-width: 44rem;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.form-grid .form-group--full {
+  grid-column: 1 / -1;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.form-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--adm-text);
+}
+.form-label span {
+  color: var(--adm-danger);
+  margin-left: 0.15rem;
+}
+.form-input,
+.form-select,
+.form-textarea {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: var(--adm-text);
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 0.375rem;
+  padding: 0.625rem 0.875rem;
+  width: 100%;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--adm-accent);
+  box-shadow: 0 0 0 3px var(--adm-accent-dim);
+}
+.form-textarea { resize: vertical; min-height: 8rem; }
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--adm-muted);
+  margin-top: 0.1rem;
+}
+
+/* Definimos los estilos para el checkbox */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--adm-text);
+  font-weight: 500;
+}
+.form-check input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--adm-accent);
+  cursor: pointer;
+}
+
+/* Definimos los estilos para las acciones del formulario */
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--adm-border);
+}
+@media (max-width: 36rem) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* Definimos los estilos para los badges de estado de reserva */
+.badge-pendiente  { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.badge-confirmada { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.badge-cancelada  { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.badge-completada { background: #e0e7ff; color: #1e1b4b; border: 1px solid #a5b4fc; }
+
+/* Definimos los estilos para la cuadrícula de detalles */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.detail-grid--full {
+  grid-template-columns: 1fr;
+}
+.detail-panel {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+.detail-panel--span2 {
+  grid-column: 1 / -1;
+}
+.detail-panel__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+  margin-bottom: 1rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--adm-border);
+}
+.detail-dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+.detail-dl dt {
+  color: var(--adm-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.detail-dl dd {
+  color: var(--adm-text);
+  font-weight: 500;
+  margin: 0;
+  word-break: break-word;
+}
+.detail-notes {
+  font-size: 0.875rem;
+  color: var(--adm-text);
+  line-height: 1.6;
+  background: var(--adm-surface-2);
+  border: 1px solid var(--adm-border);
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.25rem;
+  white-space: pre-wrap;
+}
+.status-form {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+}
+.status-form .form-select {
+  max-width: 14rem;
+}
+@media (max-width: 48rem) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .detail-panel--span2 { grid-column: 1; }
+}

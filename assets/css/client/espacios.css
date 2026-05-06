@@ -1,0 +1,520 @@
+/* Definimos estilos globales para la sección de espacios (catálogo y detalle) */
+
+/* Defininimos la estructura y estilos para la sección catálogo de espacios */
+.espacios-header {
+    background-color: var(--color-text);
+    color: var(--color-surface);
+    padding: calc(var(--space-12) + 72px) 0 var(--space-12);
+    text-align: center;
+}
+
+.espacios-header__title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: var(--space-4);
+}
+
+.espacios-header__subtitle {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.espacios-filters {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+    flex-wrap: wrap;
+}
+
+.espacios-filters .btn {
+    border-radius: var(--radius-full);
+}
+
+.espacios-filters .btn.active {
+    background-color: var(--color-text);
+    color: var(--color-surface);
+    border-color: var(--color-text);
+}
+
+.espacios__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+}
+
+@media (max-width: 1024px) {
+    .espacios__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+    }
+}
+
+@media (max-width: 768px) {
+    .espacios__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.espacios-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-12) 0;
+    color: var(--color-text-muted);
+}
+
+/* Definimos estilos para la sección de tarjeta de espacios */
+.catalog-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    transition: var(--transition-slow);
+}
+
+.catalog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.space-card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: var(--color-mid);
+    position: relative;
+}
+
+.space-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-slow);
+}
+
+.catalog-card:hover .space-card__media img {
+    transform: scale(1.05);
+}
+
+.space-card__body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.space-card__badge {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+}
+
+.space-card__name {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2);
+}
+
+.space-card__price {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.catalog-card__meta {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: var(--space-2) 0 var(--space-4);
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+}
+
+.catalog-card__amenities {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+    flex-grow: 1;
+}
+
+.catalog-card__amenities li {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    position: relative;
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-1);
+}
+
+.catalog-card__amenities li::before {
+    content: "•";
+    color: var(--color-accent);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.catalog-card__footer {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+    margin-top: auto;
+}
+
+/* Definimos estilos para la sección del placeholder global */
+.img-placeholder {
+    width: 100%;
+    min-height: 200px;
+    background-color: var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Definimos estilos para la sección de detalle de espacios */
+.detalle__layout {
+    display: flex;
+    gap: var(--space-12);
+    align-items: flex-start;
+}
+
+/* Galeria (Izquierda 60%) */
+.detalle-galeria {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.detalle-galeria__main {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--color-mid);
+}
+
+.detalle-galeria__main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.detalle-galeria__thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--space-2);
+}
+
+.detalle-galeria__thumb {
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+    opacity: 0.6;
+}
+
+.detalle-galeria__thumb:hover,
+.detalle-galeria__thumb.active {
+    opacity: 1;
+    border-color: var(--color-accent);
+}
+
+.detalle-galeria__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Definimos la estructura para la columna de información del detalle (derecha) */
+.detalle-info {
+    flex: 4;
+}
+
+.detalle-info__title {
+    font-size: var(--text-3xl);
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.detalle-info__desc {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    margin-bottom: var(--space-8);
+}
+
+.detalle-info__subtitle {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+    font-family: var(--font-display);
+}
+
+.detalle-info__amenities {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+}
+
+.detalle-info__amenities li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.detalle-info__amenities svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-accent);
+}
+
+.meta-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+}
+
+.meta-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent);
+}
+
+/* Definimos estilos para el panel de reserva flotante */
+.detalle-booking-panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: calc(72px + var(--space-6));
+    margin-top: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.detalle-booking-panel .booking-dates {
+    gap: var(--space-5);
+}
+
+.detalle-booking-panel #btn-add-cart {
+    margin-top: var(--space-4);
+}
+
+.booking-preview {
+    padding: var(--space-4);
+    background-color: var(--color-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.detalle-booking-price strong {
+    font-size: var(--text-2xl);
+    color: var(--color-text);
+}
+
+.detalle-booking-price small {
+    color: var(--color-text-muted);
+}
+
+.booking-dates {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.booking-dates .field {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .detalle__layout {
+        flex-direction: column;
+    }
+    
+    .detalle-galeria, .detalle-info {
+        flex: 1;
+        width: 100%;
+    }
+    
+    .detalle-info__amenities {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Definimos estilos para la sección de descripción larga del detalle (detalle de espacio) */
+.detalle-page {
+    padding-top: 72px;
+}
+
+.detalle-galeria {
+    margin-bottom: var(--space-8);
+}
+
+.gallery-main-container {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+}
+
+.gallery-main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detalle-content {
+    padding: var(--space-8) 0;
+}
+
+.detalle-grid {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: var(--space-8);
+}
+
+.detalle-header {
+    margin-bottom: var(--space-6);
+}
+
+.detalle-header h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    margin: var(--space-2) 0;
+}
+
+.detalle-precio {
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+}
+
+.detalle-descripcion,
+.detalle-amenidades {
+    margin-bottom: var(--space-8);
+}
+
+.detalle-descripcion h2,
+.detalle-amenidades h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+}
+
+.amenidades-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+}
+
+.amenidad-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.amenidad-check {
+    color: var(--color-success);
+    font-weight: bold;
+}
+
+.detalle-capacidad {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-mid);
+    border-radius: var(--radius-md);
+}
+
+/* Definimos estilos para el panel de reserva sticky */
+.detalle-booking-panel {
+    position: relative;
+    max-width: 100%;
+}
+
+.booking-card {
+    background: var(--color-surface);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: calc(72px + var(--space-6)); /* Navbar + espacio */
+}
+
+.booking-price {
+    text-align: center;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.booking-price .price {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.booking-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.date-field label {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+}
+
+.date-field input {
+    width: 100%;
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+/* Definimos estilos para la sección responsive (multiplataforma) */
+@media (max-width: 1024px) {
+    .detalle-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .booking-card {
+        position: static;
+    }
+}
+
+.catalog-card__title-row {
+  align-items: flex-start;
+}

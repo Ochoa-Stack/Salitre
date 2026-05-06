@@ -1,0 +1,88 @@
+/* Definimos la estructura y estilos para la página de 'Servicios' */
+.servicios-page {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+.servicios {
+  padding: var(--space-12) 0 var(--space-20);
+}
+
+.servicios .index-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* Grid 3 columnas */
+.servicios__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+/* Definimos la estructura para la tarjeta de servicio */
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-slow);
+}
+
+.service-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-light);
+  transform: translateY(-2px);
+}
+
+/* Definimos la estructura para el ícono */
+.service-card__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-mid);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.service-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.service-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.25;
+}
+
+.service-card__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .servicios__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .servicios__grid {
+    grid-template-columns: 1fr;
+  }
+  .service-card {
+    padding: var(--space-5);
+  }
+}

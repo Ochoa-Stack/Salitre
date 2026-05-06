@@ -1,0 +1,358 @@
+/* Definimos la estructura y estilos globales para 'Carrito' (flujo completo de reserva) */
+
+.carrito-header {
+    margin-bottom: var(--space-12);
+}
+
+.carrito-layout {
+    grid-template-columns: 65% 35%;
+    gap: var(--space-12);
+}
+
+@media (max-width: 1024px) {
+    .carrito-layout {
+        grid-template-columns: 60% 40%;
+        gap: var(--space-8);
+    }
+}
+
+@media (max-width: 850px) {
+    .carrito-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-10);
+    }
+}
+
+/* Definimos estilos para el contenido del carrito (columna izquierda) */
+.carrito-info__card {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    align-items: stretch;
+}
+
+.carrito-info__media {
+    flex: 0 0 45%;
+    background-color: var(--color-mid);
+    overflow: hidden;
+}
+
+.carrito-info__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carrito-info__details {
+    flex: 1;
+    padding: var(--space-6);
+}
+
+.meta-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.meta-list li {
+    margin-bottom: var(--space-2);
+}
+
+@media (max-width: 600px) {
+    .carrito-info__card {
+        flex-direction: column;
+    }
+    
+    .carrito-info__media {
+        aspect-ratio: 16/9;
+    }
+}
+
+/* Definimos estilos para el resumen del carrito (columna derecha) */
+.carrito-summary {
+    position: sticky;
+    top: calc(72px + var(--space-6));
+    align-self: start;
+}
+
+.summary-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-xl);
+}
+
+.summary-card__title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-6);
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: var(--space-3);
+    color: var(--color-text);
+}
+
+.summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.summary-list li {
+    font-size: var(--text-base);
+}
+
+.summary-total {
+    border-top: 2px solid var(--color-border);
+    margin-top: var(--space-4);
+    font-size: var(--text-xl);
+    align-items: flex-end;
+}
+
+.summary-policies,
+.summary-trust {
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--space-6);
+    margin-top: var(--space-6);
+}
+
+/* Definimos estilos para la página de confirmación del carro (pantalla de exito) */
+.confirmacion-page {
+    padding-top: calc(var(--space-20) + 72px);
+    padding-bottom: var(--space-12);
+    min-height: 100vh;
+    background: var(--color-mid);
+}
+
+.confirmacion-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--color-surface);
+    padding: var(--space-10);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.confirmacion-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-success);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-4xl);
+    margin: 0 auto var(--space-6);
+}
+
+.confirmacion-page h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+}
+
+.confirmacion-subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+}
+
+.confirmacion-detalles {
+    background: var(--color-bg);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-8);
+    text-align: left;
+}
+
+.detalle-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.detalle-row:last-child {
+    border-bottom: none;
+}
+
+.detalle-row .label {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.detalle-row .value {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.detalle-row.total .value {
+    color: var(--color-accent);
+    font-size: var(--text-xl);
+}
+
+.confirmacion-notas {
+    text-align: left;
+    margin-bottom: var(--space-8);
+}
+
+.confirmacion-notas h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+}
+
+.confirmacion-notas ol {
+    padding-left: var(--space-6);
+}
+
+.confirmacion-notas li {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+}
+
+.confirmacion-actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Definimos estilos para el carrito - layout mejorado */
+.carrito-page {
+    padding-top: calc(var(--space-20) + 72px);
+    padding-bottom: var(--space-12);
+    min-height: 100vh;
+}
+
+.carrito-grid {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    gap: var(--space-8);
+}
+
+/* Definimos la estructura para la columna izquierda de la información del carrito */
+.carrito-info {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.carrito-foto {
+    width: 100%;
+    height: 400px;
+    margin-bottom: var(--space-6);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.carrito-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carrito-detalles h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+}
+
+.carrito-fechas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+    padding: var(--space-4);
+    background: var(--color-mid);
+    border-radius: var(--radius-md);
+}
+
+/* Definimos la estructura para la columna derecha del carrito - desglose de carro */
+.carrito-resumen {
+    background: var(--color-surface);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: calc(72px + var(--space-6));
+}
+
+.carrito-resumen h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-6);
+    text-align: center;
+}
+
+.desglose-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.desglose-row.total {
+    border-bottom: none;
+    border-top: 2px solid var(--color-text);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+}
+
+.desglose-row.total .value {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+/* Definimos estilos para las políticas del carrito */
+.carrito-politicas {
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+    background: rgba(108, 128, 98, 0.1);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+}
+
+.carrito-politicas h3 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.carrito-politicas p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Seguridad */
+.carrito-seguridad {
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+    background: rgba(74, 124, 89, 0.1);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.carrito-seguridad p {
+    font-size: var(--text-sm);
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+/* Definimos estilos para el diseño responsivo - multiplataforma */
+@media (max-width: 1024px) {
+    .carrito-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .carrito-resumen {
+        position: static;
+    }
+}

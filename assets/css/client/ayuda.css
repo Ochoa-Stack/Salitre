@@ -1,0 +1,70 @@
+/* Definimos la estructura y estilos globales para 'Ayuda' (soporte y contacto) */
+
+.ayuda-page {
+    padding-top: calc(var(--space-20) + 72px);
+    padding-bottom: var(--space-12);
+    min-height: 100vh;
+    background: var(--color-mid);
+}
+
+.ayuda-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.ayuda-page h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+}
+
+.ayuda-subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+}
+
+.ayuda-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.ayuda-card-section {
+    padding: var(--space-8) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.ayuda-card-section:last-child {
+    border-bottom: none;
+}
+
+.ayuda-card-section h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+}
+
+.ayuda-card-section p {
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+}
+
+.ayuda-card-section--contacto {
+    margin-top: var(--space-4);
+    background: transparent;
+    text-align: left;
+    border-bottom: none;
+    padding-top: var(--space-8);
+    border-top: 1px dashed var(--color-border);
+}
+
+.ayuda-contacto-links {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    flex-wrap: wrap;
+}

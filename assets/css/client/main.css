@@ -1,0 +1,904 @@
+/* Importamos fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Definimos la estructura global para la navbar principal */
+.nav-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(248, 248, 245, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-main.scrolled {
+    background: rgba(248, 248, 245, 0.98);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-3) var(--space-6);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav-logo:hover {
+  color: var(--color-accent);
+}
+
+.nav-logo img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Definimos la estructura para el menú de navegación y sus componentes */
+
+/* Componentes comunes (Hamburger, Overlay, Enlaces, Dropdown) */
+.nav-burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 0;
+    margin-left: var(--space-4);
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 2px;
+    background: var(--color-text);
+    transition: var(--transition);
+    transform-origin: center;
+}
+
+.nav-burger[aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-burger[aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-burger[aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(44, 53, 57, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+    pointer-events: none;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+.nav-menu .nav-link {
+    display: block;
+    padding: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.nav-menu .nav-link:hover {
+    color: var(--color-accent);
+    padding-left: var(--space-5);
+}
+
+/* Definimos la estructura para el menú desplegable independiente en desktop */
+.nav-dropdown {
+    position: fixed;
+    top: 80px; /* Debajo del navbar */
+    right: 0;
+    width: 400px;
+    max-width: 90vw;
+    max-height: calc(100vh - 80px);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    overflow-y: auto;
+}
+
+.nav-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-container {
+    padding: var(--space-6);
+}
+
+.dropdown-logo {
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.dropdown-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    margin-bottom: var(--space-2);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.dropdown-menu a:hover {
+    background: var(--color-mid);
+    color: var(--color-accent);
+}
+
+.dropdown-auth {
+    padding-top: var(--space-4);
+    margin-top: var(--space-4);
+    border-top: 2px solid var(--color-border);
+}
+
+.dropdown-auth a {
+    display: block;
+    margin-bottom: var(--space-2);
+}
+
+.dropdown-menu .dropdown-cta {
+    background: var(--color-accent);
+    color: var(--color-text-light);
+    text-align: center;
+    font-weight: 600;
+    margin-top: var(--space-4);
+}
+
+.dropdown-menu .dropdown-cta:hover {
+    background: var(--color-accent-dark);
+}
+
+/* Responsive: Desktop */
+@media (min-width: 1280px) {
+    .nav-menu {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-6);
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        background: transparent;
+        box-shadow: none;
+        list-style: none;
+    }
+    .nav-menu .nav-link {
+        padding: var(--space-2) var(--space-3);
+        border-bottom: none;
+    }
+    .nav-burger {
+        display: flex;
+    }
+    .nav-dropdown {
+        display: block;
+    }
+}
+
+/* Responsive: Tablet y Mobile (hamburguesa) */
+@media (max-width: 1279px) {
+    .nav-menu {
+        position: fixed;
+        top: 80px;
+        right: 0;
+        width: 100vw;
+        height: calc(100vh - 80px);
+        background: var(--color-bg);
+        flex-direction: column;
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0.3s ease-out;
+        box-shadow: var(--shadow-lg);
+        z-index: 999;
+        overflow-y: auto;
+        list-style: none;
+        padding: var(--space-6);
+    }
+    .nav-menu.open {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    .nav-burger {
+        display: flex;
+    }
+    .nav-dropdown {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+    .nav-menu {
+        max-width: 400px;
+    }
+}
+
+/* Definimos la estructura para el diseño global de las páginas internas del cliente */
+
+/* Definimos variables globales para los botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1;
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: var(--transition);
+  letter-spacing: 0.01em;
+}
+
+/* Definimos el botón primario — fondo acento */
+.btn-primary {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Definimos el botón secundario — borde acento */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Definimos el botón de contorno — borde text */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Definimos el botón ghost — sin borde */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-mid);
+  color: var(--color-accent);
+}
+
+/* Definimos los tamaños */
+.btn-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-base);
+}
+
+/* Definimos el estado deshabilitado */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Definimos el foco visible accesible */
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Definimos la estructura global para el footer */
+.footer {
+  background-color: var(--color-mid);
+  padding: var(--space-16) 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.footer__brand {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.footer__tagline {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.footer__title {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.footer__list a {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  transition: var(--transition);
+}
+
+.footer__list a:hover {
+  color: var(--color-accent);
+}
+
+.footer__bottom {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+.footer__bottom p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Definimos la estructura global para las animaciones de fade-in y fade-up */
+[data-animate] {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Definimos la animación fade simple (por defecto) */
+[data-animate]:not([data-animate="fade-up"]):not([data-animate="fade-left"]):not([data-animate="fade-right"]):not([data-animate="scale-up"]) {
+  transform: none;
+}
+
+[data-animate="fade-up"] {
+  transform: translateY(32px);
+}
+
+[data-animate="fade-left"] {
+  transform: translateX(32px);
+}
+
+[data-animate="fade-right"] {
+  transform: translateX(-32px);
+}
+
+[data-animate="scale-up"] {
+  transform: scale(0.92);
+}
+
+/* Definimos el estado visible (añadido por el 'observer') */
+[data-animate].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Definimos el delay escalonado para grupos de hijos */
+[data-animate]:nth-child(1)  { transition-delay: 0ms;   }
+[data-animate]:nth-child(2)  { transition-delay: 80ms;  }
+[data-animate]:nth-child(3)  { transition-delay: 160ms; }
+[data-animate]:nth-child(4)  { transition-delay: 240ms; }
+[data-animate]:nth-child(5)  { transition-delay: 320ms; }
+[data-animate]:nth-child(6)  { transition-delay: 400ms; }
+
+/* Definimos la clase legacy — soporta el fade-in usado en 'client/index.php' */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Definimos el respeto a prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Definimos la estructura global de las utilidades */
+/* Definimos la estructura del contenedor base */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.container--narrow {
+  max-width: 800px;
+}
+
+.container--wide {
+  max-width: 1440px;
+}
+
+/* Definimos la estructura del grid */
+.grid {
+  display: grid;
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Definimos la estructura de los flex */
+.flex         { display: flex; }
+.flex-center  { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col     { display: flex; flex-direction: column; }
+.flex-wrap    { flex-wrap: wrap; }
+.gap-2        { gap: var(--space-2); }
+.gap-4        { gap: var(--space-4); }
+.gap-6        { gap: var(--space-6); }
+.gap-8        { gap: var(--space-8); }
+
+/* Definimos la estructura del texto */
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.text-muted   { color: var(--color-text-muted); }
+.text-accent  { color: var(--color-accent); }
+.text-sm      { font-size: var(--text-sm); }
+.text-lg      { font-size: var(--text-lg); }
+.text-xl      { font-size: var(--text-xl); }
+
+/* Definimos los encabezados de sección */
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.section-subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-10);
+  max-width: 560px;
+}
+
+/* Definimos el espaciado de secciones */
+.section-pad {
+  padding: var(--space-20) 0;
+}
+
+/* Definimos el offset para navbar fixed */
+.page-offset {
+  padding-top: 72px;
+}
+
+/* Definimos el divider */
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+
+/* Definimos el estilo para los badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: var(--radius-full);
+  background-color: var(--color-mid);
+  color: var(--color-text-muted);
+}
+
+.badge--accent {
+  background-color: var(--color-accent-light);
+  color: #ffffff;
+}
+
+/* Definimos el estilo para las alertas inline */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  border: 1px solid transparent;
+}
+
+.alert--success {
+  background-color: #f0faf4;
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.alert--error {
+  background-color: #fdf2f2;
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+/* Definimos la estructura global para el responsive - multiplataforma */
+@media (max-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__about {
+    grid-column: 1 / -1;
+  }
+
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  /* Footer */
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .footer {
+    padding-top: var(--space-12);
+  }
+
+  /* Grids */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .container,
+  .nav-container,
+  .footer-container {
+    padding: 0 var(--space-4);
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+  }
+}
+
+/* Definimos la estructura global del footer completo */
+.footer {
+    background: var(--color-text);
+    color: var(--color-text-light);
+    padding: var(--space-12) 0 var(--space-6);
+    margin-top: var(--space-20);
+}
+
+.footer-top {
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-8);
+}
+
+.footer-logo img {
+    margin-bottom: var(--space-4);
+}
+
+.footer-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+}
+
+.footer-col h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+    color: var(--color-accent-light);
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: var(--space-2);
+}
+
+.footer-col ul li a {
+    color: var(--color-text-light);
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.footer-col ul li a:hover {
+    opacity: 1;
+    color: var(--color-accent-light);
+}
+
+.footer-contact li {
+    opacity: 0.8;
+    margin-bottom: var(--space-3);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.footer-social a {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-text-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-light);
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.footer-social a:hover {
+    opacity: 1;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
+    }
+}
+
+/* Definimos la estructura global para el sistema de alertas modales */
+.salitre-alerts-container {
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    pointer-events: none; /* Permite clicks a través del contenedor */
+}
+
+.salitre-alert {
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    min-width: 300px;
+    max-width: 400px;
+    pointer-events: auto; /* Reactiva clicks en la alerta */
+    position: relative;
+    overflow: hidden;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.salitre-alert.is-visible {
+    transform: translateX(0);
+}
+
+.alert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.alert-success .alert-icon { background: var(--color-success); }
+.alert-error .alert-icon { background: var(--color-danger); }
+.alert-warning .alert-icon { background: #f59e0b; }
+.alert-info .alert-icon { background: #3b82f6; }
+
+.alert-content {
+    flex-grow: 1;
+}
+
+.alert-title {
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+    color: var(--color-text);
+}
+
+.alert-message {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.alert-close {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin-top: -2px;
+}
+
+.alert-close:hover {
+    color: var(--color-text);
+}
+
+.alert-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: rgba(0,0,0,0.1);
+    width: 100%;
+    transform-origin: left;
+    animation: alert-progress var(--duration) linear forwards;
+}
+
+.alert-success .alert-progress { background: var(--color-success); }
+.alert-error .alert-progress { background: var(--color-danger); }
+
+@keyframes alert-progress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+/* Definimos la estructura para el responsive - multiplataforma */
+@media (max-width: 480px) {
+    .salitre-alerts-container {
+        bottom: var(--space-4);
+        right: var(--space-4);
+        left: var(--space-4);
+        align-items: stretch;
+    }
+    
+    .salitre-alert {
+        max-width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Fin del archivo main.css - Parches eliminados */
