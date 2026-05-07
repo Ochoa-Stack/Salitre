@@ -13,6 +13,8 @@
         <?php endif; ?>
 
         <form action="<?= $base ?>client/auth/procesar_auth.php" method="POST" class="auth-form">
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <input type="hidden" name="action" value="login">
             <?php if (isset($_GET['redirect'])) : ?>
                 <input type="hidden" name="redirect" value="<?= htmlspecialchars((string)$_GET['redirect'], ENT_QUOTES, 'UTF-8') ?>">

@@ -9,7 +9,7 @@
                      alt="Salitre"
                      width="120"
                      height="40">
-                <p class="footer-tagline">Nah, I'd Win...</p>
+                <p class="footer-tagline">Sal de la oficina. No del trabajo.</p>
             </div>
         </div>
         

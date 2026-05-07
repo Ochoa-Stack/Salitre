@@ -6,6 +6,12 @@ require_once dirname(dirname(__DIR__)) . '/config/constants.php';
 require_once dirname(dirname(__DIR__)) . '/config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
     /* Validamos y procesamos el formulario de contacto - prevención de XSS e inyecciones */
 
     $nombre = trim($_POST['nombre']  ?? '');
@@ -25,9 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ' . BASE_URL . 'client/contacto/index.php?contacto=error');
         exit;
     }
-    // 'htmlspecialchars()' nos ayuda a prevenir XSS cuando el staff lo lea
-    $nombre = htmlspecialchars($nombre, ENT_QUOTES, "UTF-8");
-    $mensaje = htmlspecialchars($mensaje, ENT_QUOTES, "UTF-8");
+    // Los datos se guardan sin transformar — la sanitización de salida
+    // (htmlspecialchars) se aplica exclusivamente en las vistas al mostrarlos.
 
     try {
         $pdo  = conectarDB();

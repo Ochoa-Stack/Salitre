@@ -5,7 +5,20 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . "/includes/auth_check.php";
 require_once dirname(__DIR__, 2) . "/config/database.php";
 
-$id = filter_var($_GET["id"] ?? 0, FILTER_VALIDATE_INT);
+// Sólo aceptamos 'POST' para protección contra activación por enlace 'GET'
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: listar.php");
+    exit;
+}
+
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+
+$id = filter_var($_POST["id"] ?? 0, FILTER_VALIDATE_INT);
 if (!$id) {
     header("Location: listar.php");
     exit;

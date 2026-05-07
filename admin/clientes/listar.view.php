@@ -54,6 +54,17 @@
 <?php endif; ?>
         </tbody>
       </table>
+      <?php if (isset($total_pages) && $total_pages > 1) : ?>
+      <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center; align-items: center; padding: 1rem 0;">
+          <?php if ($page > 1) : ?>
+              <a href="?page=<?= $page - 1 ?>" class="btn btn--secondary">&laquo; Anterior</a>
+          <?php endif; ?>
+          <span style="font-size: 0.875rem; color: var(--adm-color-text-muted);">Página <?= $page ?> de <?= $total_pages ?></span>
+          <?php if ($page < $total_pages) : ?>
+              <a href="?page=<?= $page + 1 ?>" class="btn btn--secondary">Siguiente &raquo;</a>
+          <?php endif; ?>
+      </div>
+      <?php endif; ?>
     </div><!-- /.data-table-wrap -->
 
 <?php require_once '../includes/footer.php'; ?>

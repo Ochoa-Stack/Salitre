@@ -86,8 +86,9 @@
             <?php echo ucfirst($estado_actual); ?>
           </span>
         </p>
-        <form class="status-form" method="post"
-              action="<?php echo htmlspecialchars(BASE_URL . 'admin/reservas/detalle.php?id=' . $id, ENT_QUOTES, 'UTF-8'); ?>">
+        <form class="status-form" method="post" action="<?php echo htmlspecialchars(BASE_URL . 'admin/reservas/detalle.php?id=' . $id, ENT_QUOTES, 'UTF-8'); ?>">
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
           <select class="form-select" name="estado" id="estado" required>
             <?php foreach (ESTADOS_RESERVA as $opt) : ?>
             <option value="<?php echo $opt; ?>" <?php echo ($opt === $estado_actual) ? 'selected' : ''; ?>>

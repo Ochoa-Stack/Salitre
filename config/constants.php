@@ -15,4 +15,5 @@ define('SITE_TAGLINE', 'Sal de la oficina. No del trabajo.');
 define('IVA', 0.16);              /* Lo usamos en 'client/carrito/agregar.php' */
 define('LIMPIEZA_FEE', 25.00);    /* Lo usamos en 'client/carrito/agregar.php' */
 define('UPLOAD_PATH', __DIR__ . '/../assets/img/client/espacios/');
+define('PAGE_SIZE', 20);          /* Items por página en admin */
 ?>

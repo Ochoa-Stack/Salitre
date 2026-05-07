@@ -13,10 +13,12 @@
             <!-- Definimos la columna izquierda -->
             <div class="carrito-info fade-in" data-delay="100">
                 <div class="carrito-foto">
-                    <?php if (!empty($espacio['foto_principal'])) : ?>
+                    <?php if (!empty($espacio['foto_principal'])) : 
+                        $foto_path = strpos($espacio['foto_principal'], 'assets/') === 0 ? $espacio['foto_principal'] : 'assets/img/client/espacios/' . $espacio['foto_principal'];
+                    ?>
                         <picture>
-                            <source srcset="<?= htmlspecialchars($base . str_replace('.jpg', '.webp', $espacio['foto_principal']), ENT_QUOTES, 'UTF-8') ?>" type="image/webp">
-                            <img src="<?= htmlspecialchars($base . $espacio['foto_principal'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$espacio['nombre'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                            <source srcset="<?= htmlspecialchars($base . str_replace('.jpg', '.webp', $foto_path), ENT_QUOTES, 'UTF-8') ?>" type="image/webp">
+                            <img src="<?= htmlspecialchars($base . $foto_path, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$espacio['nombre'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                         </picture>
                     <?php else : ?>
                         <div class="img-placeholder">
@@ -58,6 +60,8 @@
                 </div>
 
                 <form id="form-carrito-checkout" action="<?= $base ?>client/carrito/procesar_reserva.php" method="POST">
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                     <input type="hidden" name="cart_intent" value="1">
                     <button type="submit" class="btn btn-primary btn-lg w-full mt-6" id="btn-request">Solicitar Reserva</button>
                 </form>

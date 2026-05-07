@@ -382,7 +382,7 @@
 
 .gallery-main-container {
     width: 100%;
-    height: 600px;
+    aspect-ratio: 16/9;
     overflow: hidden;
 }
 
