@@ -11,6 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 if (!$id || $id < 1) {
     header('Location: ' . BASE_URL . 'admin/espacios/listar.php');

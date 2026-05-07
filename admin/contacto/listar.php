@@ -9,18 +9,29 @@ require_once dirname(__DIR__, 2) . '/config/database.php';
 $mensajes = [];
 try {
     $pdo  = conectarDB();
+    $page = max(1, (int)($_GET['page'] ?? 1));
+    $offset = ($page - 1) * PAGE_SIZE;
+
+    $stmt_count = $pdo->query('SELECT COUNT(*) FROM contacto');
+    $total_records = (int)$stmt_count->fetchColumn();
+    $total_pages = ceil($total_records / PAGE_SIZE);
+    
+    $stmt_nl = $pdo->query('SELECT COUNT(*) FROM contacto WHERE leido = 0');
+    $no_leidos = (int)$stmt_nl->fetchColumn();
+
     $stmt = $pdo->prepare(
         'SELECT id, nombre, email, mensaje, leido, creado_en
          FROM contacto
-         ORDER BY leido ASC, creado_en DESC'
+         ORDER BY leido ASC, creado_en DESC
+         LIMIT :limit OFFSET :offset'
     );
+    $stmt->bindValue(':limit', PAGE_SIZE, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $mensajes = $stmt->fetchAll();
 } catch (Throwable $e) {
     error_log('Admin contacto/listar: ' . $e->getMessage());
 }
-
-$no_leidos = count(array_filter($mensajes, fn($m) => !(bool) $m['leido']));
 
 $flash = (isset($_GET['success']) && $_GET['success'] === 'marked_read')
     ? ['type' => 'success', 'text' => 'Mensaje marcado como leído']

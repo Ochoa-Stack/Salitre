@@ -33,10 +33,12 @@
                     <article class="space-card catalog-card fade-in" data-tipo="<?= $tipo ?>" data-delay="<?= ($index % 3) * 100 ?>">
                         <div class="space-card__media">
 
-                            <?php if (!empty($espacio['foto_principal'])) : ?>
+                            <?php if (!empty($espacio['foto_principal'])) : 
+                                $foto_path = strpos($espacio['foto_principal'], 'assets/') === 0 ? $espacio['foto_principal'] : 'assets/img/client/espacios/' . $espacio['foto_principal'];
+                            ?>
                                 <picture>
-                                    <source srcset="<?= htmlspecialchars($base . $espacio['foto_principal'], ENT_QUOTES, 'UTF-8') ?>" type="image/webp">
-                                    <img src="<?= htmlspecialchars($base . $espacio['foto_principal'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$espacio['nombre'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                                    <source srcset="<?= htmlspecialchars($base . $foto_path, ENT_QUOTES, 'UTF-8') ?>" type="image/webp">
+                                    <img src="<?= htmlspecialchars($base . $foto_path, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$espacio['nombre'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                                 </picture>
                             <?php else : ?>
                                 <div class="img-placeholder" aria-label="Placeholder para <?= htmlspecialchars((string)$espacio['nombre'], ENT_QUOTES, 'UTF-8') ?>">

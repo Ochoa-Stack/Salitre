@@ -31,9 +31,13 @@ $foto_primaria = !empty($espacio['foto_principal']) ? $espacio['foto_principal']
 
 // Preparar lista total de fotos para la galeria
 $todas_fotos = [];
-if ($foto_primaria) $todas_fotos[] = $foto_primaria;
+if ($foto_primaria) {
+    $todas_fotos[] = strpos($foto_primaria, 'assets/') === 0 ? $foto_primaria : 'assets/img/client/espacios/' . $foto_primaria;
+}
 foreach ($fotos_galeria as $f) {
-    if (!empty($f)) $todas_fotos[] = $f;
+    if (!empty($f)) {
+        $todas_fotos[] = strpos($f, 'assets/') === 0 ? $f : 'assets/img/client/espacios/' . $f;
+    }
 }
 require __DIR__ . '/detalle.view.php';
 ?>

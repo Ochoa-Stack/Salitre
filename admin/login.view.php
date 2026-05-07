@@ -26,6 +26,9 @@
 <?php endif; ?>
 
     <form class="auth-form" method="post" action="" novalidate>
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
       <div class="auth-form__group">
         <label class="auth-form__label" for="email">Correo electrónico</label>
         <input

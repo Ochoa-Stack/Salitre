@@ -18,6 +18,12 @@ $values = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
     // Sanitizamos y validamos los datos del formulario
     $values['nombre']       = trim((string) ($_POST['nombre']       ?? ''));
     $values['slug']         = trim((string) ($_POST['slug']         ?? ''));
@@ -47,21 +53,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        try {
-            $pdo  = conectarDB();
-            $stmt = $pdo->prepare(
-                'INSERT INTO espacios (nombre, slug, tipo, descripcion, precio_noche, capacidad, activo)
-                 VALUES (:nombre, :slug, :tipo, :descripcion, :precio_noche, :capacidad, :activo)'
-            );
-            $stmt->execute([
-                ':nombre'       => $values['nombre'],
-                ':slug'         => $values['slug'],
-                ':tipo'         => $values['tipo'],
-                ':descripcion'  => $values['descripcion'],
-                ':precio_noche' => $precio,
-                ':capacidad'    => $capacidad,
-                ':activo'       => (int) $values['activo'],
-            ]);
+        // Manejo de imagen
+        $foto_nombre = null;
+        if (isset($_FILES['foto_principal']) && $_FILES['foto_principal']['error'] === UPLOAD_ERR_OK) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['foto_principal']['tmp_name']);
+            finfo_close($finfo);
+
+            $allowed_mimes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!in_array($mime, $allowed_mimes, true)) {
+                $errors[] = 'Formato de imagen no permitido. Solo JPG, PNG o WEBP.';
+            } else {
+                $ext = pathinfo($_FILES['foto_principal']['name'], PATHINFO_EXTENSION);
+                $foto_nombre = uniqid('esp_') . '.' . $ext;
+                
+                if (!is_dir(UPLOAD_PATH)) {
+                    mkdir(UPLOAD_PATH, 0777, true);
+                }
+                if (!move_uploaded_file($_FILES['foto_principal']['tmp_name'], UPLOAD_PATH . $foto_nombre)) {
+                    $errors[] = 'Error al subir la imagen.';
+                }
+            }
+        }
+
+        if (empty($errors)) {
+            try {
+                $pdo  = conectarDB();
+                $stmt = $pdo->prepare(
+                    'INSERT INTO espacios (nombre, slug, tipo, descripcion, precio_noche, capacidad, activo, foto_principal)
+                     VALUES (:nombre, :slug, :tipo, :descripcion, :precio_noche, :capacidad, :activo, :foto_principal)'
+                );
+                $stmt->execute([
+                    ':nombre'       => $values['nombre'],
+                    ':slug'         => $values['slug'],
+                    ':tipo'         => $values['tipo'],
+                    ':descripcion'  => $values['descripcion'],
+                    ':precio_noche' => $precio,
+                    ':capacidad'    => $capacidad,
+                    ':activo'       => (int) $values['activo'],
+                    ':foto_principal'=> $foto_nombre,
+                ]);
             header('Location: ' . BASE_URL . 'admin/espacios/listar.php?msg=creado');
             exit();
         } catch (PDOException $e) {
@@ -72,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'Error al guardar. Inténtalo de nuevo.';
             }
         }
-    }
+            }
+        }
 }
 
 // Definimos el título de la página y los estilos adicionales, luego incluimos el header y sidebar comunes

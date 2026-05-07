@@ -23,7 +23,9 @@
     <?php endif; ?>
 
     <div class="form-card">
-      <form method="post" action="" novalidate>
+      <form method="post" action="" enctype="multipart/form-data" novalidate>
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
         <div class="form-grid">
 
@@ -77,6 +79,11 @@
           <div class="form-group form-group--full">
             <label class="form-label" for="descripcion">Descripción</label>
             <textarea class="form-textarea" id="descripcion" name="descripcion" maxlength="2000"><?php echo htmlspecialchars($values['descripcion'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+          </div>
+
+          <div class="form-group form-group--full">
+            <label class="form-label" for="foto_principal">Foto Principal (JPG/PNG/WEBP)</label>
+            <input class="form-input" type="file" id="foto_principal" name="foto_principal" accept=".jpg,.jpeg,.png,.webp">
           </div>
 
         </div>

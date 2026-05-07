@@ -10,13 +10,23 @@ require_once dirname(__DIR__, 2) . '/config/database.php';
 $clientes = [];
 try {
     $pdo  = conectarDB();
+    $page = max(1, (int)($_GET['page'] ?? 1));
+    $offset = ($page - 1) * PAGE_SIZE;
+
+    $stmt_count = $pdo->query('SELECT COUNT(*) FROM clientes');
+    $total_records = (int)$stmt_count->fetchColumn();
+    $total_pages = ceil($total_records / PAGE_SIZE);
+
     $stmt = $pdo->prepare(
         'SELECT c.*, COUNT(r.id) as total_reservas 
          FROM clientes c 
          LEFT JOIN reservas r ON c.id = r.cliente_id 
          GROUP BY c.id 
-         ORDER BY c.creado_en DESC'
+         ORDER BY c.creado_en DESC 
+         LIMIT :limit OFFSET :offset'
     );
+    $stmt->bindValue(':limit', PAGE_SIZE, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $clientes = $stmt->fetchAll();
 } catch (Throwable $e) {

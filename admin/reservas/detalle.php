@@ -19,6 +19,12 @@ $msg_ok  = isset($_GET['msg']) && $_GET['msg'] === 'actualizado';
 $error   = '';
 // Actualizamos el estado de la reserva usando lógica 'POST' (si se envió el formulario)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
     $nuevo_estado = trim((string) ($_POST['estado'] ?? ''));
     if (!in_array($nuevo_estado, ESTADOS_RESERVA, true)) {
         $error = 'Estado no válido.';

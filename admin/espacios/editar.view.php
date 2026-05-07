@@ -23,7 +23,9 @@
     <?php endif; ?>
 
     <div class="form-card">
-      <form method="post" action="<?php echo htmlspecialchars(BASE_URL . 'admin/espacios/editar.php?id=' . $id, ENT_QUOTES, 'UTF-8'); ?>" novalidate>
+      <form method="post" action="<?php echo htmlspecialchars(BASE_URL . 'admin/espacios/editar.php?id=' . $id, ENT_QUOTES, 'UTF-8'); ?>" enctype="multipart/form-data" novalidate>
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
         <div class="form-grid">
 
@@ -77,6 +79,14 @@
           <div class="form-group form-group--full">
             <label class="form-label" for="descripcion">Descripción</label>
             <textarea class="form-textarea" id="descripcion" name="descripcion" maxlength="2000"><?php echo htmlspecialchars($values['descripcion'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+          </div>
+
+          <div class="form-group form-group--full">
+            <label class="form-label" for="foto_principal">Foto Principal (JPG/PNG/WEBP) - Dejar en blanco para conservar actual</label>
+            <input class="form-input" type="file" id="foto_principal" name="foto_principal" accept=".jpg,.jpeg,.png,.webp">
+            <?php if (!empty($espacio['foto_principal'])) : ?>
+              <p style="margin-top: 0.5rem; font-size: 0.875rem;">Actual: <a href="<?php echo BASE_URL . 'assets/img/client/espacios/' . htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" style="color: var(--color-accent); text-decoration: underline;"><?php echo htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+            <?php endif; ?>
           </div>
 
         </div>

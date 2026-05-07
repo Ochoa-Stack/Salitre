@@ -50,23 +50,23 @@ $base = BASE_URL;
 <div class="nav-dropdown" id="nav-dropdown" aria-hidden="true">
     <div class="dropdown-container">
         <ul class="dropdown-menu">
-            <li><a href="<?= BASE_URL ?>/client/index.php">Inicio</a></li>
-            <li><a href="<?= BASE_URL ?>/client/espacios/index.php">Espacios</a></li>
+            <li><a href="<?= BASE_URL ?>client/index.php">Inicio</a></li>
+            <li><a href="<?= BASE_URL ?>client/espacios/index.php">Espacios</a></li>
             <li><a href="<?= BASE_URL ?>client/servicios/index.php">Servicios</a></li>
-            <li><a href="<?= BASE_URL ?>/client/agenda/index.php">Agenda</a></li>
+            <li><a href="<?= BASE_URL ?>client/agenda/index.php">Agenda</a></li>
             <li><a href="<?= BASE_URL ?>client/contacto/index.php">Contacto</a></li>
-            <li><a href="<?= BASE_URL ?>/client/proyecto/index.php">Proyecto</a></li>
-            <li><a href="<?= BASE_URL ?>/client/ayuda/index.php">Ayuda</a></li>
+            <li><a href="<?= BASE_URL ?>client/proyecto/index.php">Proyecto</a></li>
+            <li><a href="<?= BASE_URL ?>client/ayuda/index.php">Ayuda</a></li>
             <li class="dropdown-auth">
                 <?php if(isset($_SESSION["cliente_id"])): ?>
-                    <a href="<?= BASE_URL ?>/client/auth/perfil.php">Mi Cuenta</a>
-                    <a href="<?= BASE_URL ?>/client/auth/logout.php">Cerrar Sesión</a>
+                    <a href="<?= BASE_URL ?>client/auth/perfil.php">Mi Cuenta</a>
+                    <a href="<?= BASE_URL ?>client/auth/logout.php">Cerrar Sesión</a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>/client/auth/login.php">Iniciar Sesión</a>
-                    <a href="<?= BASE_URL ?>/client/auth/registro.php">Registrarse</a>
+                    <a href="<?= BASE_URL ?>client/auth/login.php">Iniciar Sesión</a>
+                    <a href="<?= BASE_URL ?>client/auth/registro.php">Registrarse</a>
                 <?php endif; ?>
             </li>
-            <li><a href="<?= BASE_URL ?>/client/espacios/index.php" class="dropdown-cta">Reservar</a></li>
+            <li><a href="<?= BASE_URL ?>client/espacios/index.php" class="dropdown-cta">Reservar</a></li>
         </ul>
     </div>
 </div>

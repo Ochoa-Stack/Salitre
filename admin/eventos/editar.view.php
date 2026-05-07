@@ -21,6 +21,8 @@
 
         <div class="form-card">
             <form method="POST" action="editar.php?id=<?= $id ?>" class="form-grid">
+<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                 
                 <div class="form-group form-group--full">
                     <label for="titulo" class="form-label">Título del Evento <span>*</span></label>
