@@ -1,3 +1,6 @@
-/* Archivo principal de estilos para el panel de administración */
+/* Es el punto de entrada de estilos del panel de administración.
+Este archivo actúa como re-dispatcher: delega toda la carga a dashboard.css,
+que a su vez importa variables.css. Mantenerlo permite que header.php use
+una ruta estable sin acoplarse al nombre interno del archivo de dashboard */
 
 @import url('dashboard.css');

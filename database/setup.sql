@@ -117,3 +117,36 @@ INSERT INTO clientes (nombre, email, password, telefono) VALUES
  '5512345678');
 
 -- Fin del script de configuración inicial
+
+-- ============================================================
+-- MIGRACIONES INTEGRADAS
+-- (sincronizadas desde database/migrations/)
+-- ============================================================
+
+-- Migración: Tokens de recuperación de contraseña
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT NOT NULL,
+  token      VARCHAR(64) NOT NULL,
+  expira_en  DATETIME NOT NULL,
+  usado      TINYINT(1) DEFAULT 0,
+  creado_en  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+  INDEX idx_token (token)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Migración: Pasarela de pago simulada
+ALTER TABLE reservas ADD COLUMN IF NOT EXISTS estado_pago
+  ENUM('pendiente','pagado') NOT NULL DEFAULT 'pendiente';
+
+CREATE TABLE IF NOT EXISTS pagos (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  reserva_id    INT NOT NULL,
+  monto         DECIMAL(10,2) NOT NULL,
+  metodo        ENUM('tarjeta','oxxo','paypal') NOT NULL DEFAULT 'tarjeta',
+  estado        ENUM('pendiente','aprobado','rechazado') NOT NULL DEFAULT 'pendiente',
+  ultimos4      CHAR(4) DEFAULT NULL,
+  marca_tarjeta VARCHAR(20) DEFAULT NULL,
+  procesado_en  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (reserva_id) REFERENCES reservas(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

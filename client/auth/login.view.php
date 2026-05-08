@@ -10,6 +10,10 @@
             <div class="alert alert--error mb-4">
                 <p>Correo o contraseña incorrectos.</p>
             </div>
+        <?php elseif (isset($_GET['reset_success']) && $_GET['reset_success'] === '1') : ?>
+            <div class="alert alert--success mb-4">
+                <p>Contraseña actualizada correctamente. Ya puedes iniciar sesión.</p>
+            </div>
         <?php endif; ?>
 
         <form action="<?= $base ?>client/auth/procesar_auth.php" method="POST" class="auth-form">
@@ -31,6 +35,10 @@
             </div>
 
             <button type="submit" class="btn btn-primary w-full mt-2" style="justify-content:center;">Ingresar</button>
+            
+            <div class="mt-4 text-center">
+                <a href="<?= $base ?>client/auth/recuperar_password.php" class="text-muted text-sm hover-accent">¿Olvidaste tu contraseña?</a>
+            </div>
         </form>
 
         <div class="auth-card__footer mt-6 text-center text-sm">

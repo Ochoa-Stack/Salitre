@@ -29,17 +29,28 @@
                     <span class="value"><?= $reserva["noches"] ?></span>
                 </div>
                 <div class="detalle-row total">
-                    <span class="label">Total pagadero:</span>
+                    <span class="label">Total pagado:</span>
                     <span class="value">$<?= number_format((float)$reserva["precio_total"], 2) ?> MXN</span>
                 </div>
+                <?php if ($pago_resumen): ?>
+                    <div class="detalle-row" style="border-top: 1px dashed var(--neutral-200); margin-top: 10px; padding-top: 10px;">
+                        <span class="label">Método de Pago:</span>
+                        <span class="value">
+                            <?= ucfirst($pago_resumen['metodo']) ?> 
+                            <?php if ($pago_resumen['ultimos4']): ?>
+                                <?= htmlspecialchars($pago_resumen['marca']) ?> ****<?= $pago_resumen['ultimos4'] ?>
+                            <?php endif; ?>
+                        </span>
+                    </div>
+                <?php endif; ?>
             </div>
             
             <div class="confirmacion-notas">
                 <h3>Próximos pasos:</h3>
                 <ol>
-                    <li>Recibirás un email de confirmación en las próximas 24 horas.</li>
-                    <li>El staff se pondrá en contacto para coordinar detalles.</li>
-                    <li>El pago se realiza al momento del check-in.</li>
+                    <li>Recibirás un email con los detalles de acceso en breve.</li>
+                    <li>El staff te contactará si hay alguna actualización climática.</li>
+                    <li>Tu pago ha sido procesado y confirmado exitosamente.</li>
                 </ol>
             </div>
             

@@ -4,7 +4,8 @@ session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
 
-$slug = filter_var($_GET["slug"] ?? "", FILTER_SANITIZE_SPECIAL_CHARS);
+// Filtramos el slug manualmente para eliminar cualquier caracter no válido en una URL
+$slug = preg_replace('/[^a-z0-9\-]/', '', strtolower(trim($_GET["slug"] ?? "")));
 if (empty($slug)) { header("Location: index.php"); exit; }
 
 $pdo = conectarDB();

@@ -38,6 +38,11 @@
                 <label for="email" class="field__label">Correo electrónico</label>
                 <input type="email" id="email" name="email" class="field__input" required autocomplete="email" placeholder="correo@dominio.com">
             </div>
+            
+            <div class="field">
+                <label for="telefono" class="field__label">Teléfono (Opcional)</label>
+                <input type="tel" id="telefono" name="telefono" class="field__input" autocomplete="tel" placeholder="+52 000 000 0000">
+            </div>
 
             <div class="field">
                 <label for="password" class="field__label">Contraseña</label>

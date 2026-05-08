@@ -148,3 +148,30 @@
     color: var(--color-text-muted);
     margin-bottom: var(--space-4);
 }
+
+/* Botón de ancho completo centrado — usado en formularios de auth */
+.btn-full-center {
+    width: 100%;
+    justify-content: center;
+    margin-top: var(--space-4);
+}
+
+/* Botón destructivo con borde — cancelar reserva */
+.btn-danger-outline {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+    background: transparent;
+}
+
+.btn-danger-outline:hover {
+    background: var(--color-danger);
+    color: var(--color-surface);
+}
+
+@media (max-width: 768px) {
+    .reservas-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

@@ -1,0 +1,223 @@
+/* assets/css/client/pago.css — Estilos para la pasarela de pago simulada */
+
+.pago-page {
+    padding: var(--space-8) 0;
+}
+
+/* Layout principal: dos columnas en desktop, una en mobile */
+.pago-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-12);
+    align-items: start;
+}
+
+.pago-resumen,
+.pago-formulario {
+    background: var(--color-surface);
+    padding: var(--space-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.pago-resumen h2,
+.pago-formulario h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-6);
+    color: var(--color-text);
+}
+
+.resumen-detalle {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+}
+
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.resumen-item.total {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--color-border);
+    font-weight: 700;
+    color: var(--color-text);
+    font-size: var(--text-lg);
+}
+
+/* Selector de método de pago */
+.metodo-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.metodo-option {
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--color-surface);
+}
+
+.metodo-option:hover {
+    border-color: var(--color-accent-light);
+}
+
+.metodo-option.active {
+    border-color: var(--color-accent);
+    background: var(--color-mid);
+}
+
+.metodo-option img {
+    height: 24px;
+    margin-bottom: var(--space-2);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.metodo-option span {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Campos de tarjeta */
+.card-fields {
+    display: none;
+}
+
+.card-fields.active {
+    display: block;
+}
+
+/* Grid de dos columnas para expiración + CVV */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+/* Logos de marca de tarjeta */
+.card-brand-display {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.card-brand-display img {
+    height: 100%;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.card-brand-display img.active {
+    opacity: 1;
+}
+
+/* Nota de demo */
+.demo-note {
+    font-size: var(--text-xs);
+    color: var(--color-text-light);
+    margin-top: var(--space-6);
+    text-align: center;
+}
+
+/* Tarjetas de prueba colapsables */
+.test-cards {
+    margin-top: var(--space-4);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+}
+
+.test-cards summary {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-accent);
+}
+
+.test-cards ul {
+    margin-top: var(--space-2);
+    list-style: none;
+    padding: 0;
+}
+
+.test-cards li {
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-1);
+    font-family: monospace;
+    color: var(--color-text-muted);
+}
+
+/* Spinner de procesamiento */
+.spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin-right: var(--space-2);
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-processing .spinner {
+    display: inline-block;
+}
+
+/* Botón submit centrado */
+.btn-pago-submit {
+    justify-content: center;
+    width: 100%;
+    margin-top: var(--space-6);
+}
+
+/* Texto discarded si admin tiene muted inline */
+.text-admin-muted {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Breakpoints */
+@media (max-width: 768px) {
+    .pago-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    .metodo-selector {
+        gap: var(--space-2);
+    }
+}
+
+@media (max-width: 480px) {
+    .pago-resumen,
+    .pago-formulario {
+        padding: var(--space-6);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pago-page {
+        padding: var(--space-4) 0;
+    }
+}

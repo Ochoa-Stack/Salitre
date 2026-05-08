@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(403);
         die('CSRF token validation failed');
     }
+    // Invalidamos el token usado para asegurar que la acción solo se ejecute una vez por generación
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
 

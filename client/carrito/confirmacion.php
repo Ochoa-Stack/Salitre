@@ -37,8 +37,12 @@ if (!$reserva) {
     exit;
 }
 
-/* Limpiamos el ID de confirmación */
+/* Obtenemos el resumen del pago si existe */
+$pago_resumen = $_SESSION["pago_resumen"] ?? null;
+
+/* Limpiamos los datos de confirmación para evitar re-accesos */
 unset($_SESSION["reserva_confirmacion_id"]);
+unset($_SESSION["pago_resumen"]);
 
 $page_title = "Reserva Confirmada — Hotel Salitre";
 $extra_stylesheets = ["assets/css/client/carrito.css"];

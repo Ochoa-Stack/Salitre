@@ -17,12 +17,21 @@ $nav_items = [
      'icon' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>'],
 ];
 ?>
-<aside class="sidebar" role="complementary" aria-label="Menú de Administración">
+<!-- Overlay para cerrar el sidebar en mobile al hacer click fuera -->
+<div class="sidebar-overlay" id="sidebar-overlay" role="presentation"></div>
+
+<aside class="sidebar" id="admin-sidebar" role="complementary" aria-label="Menú de Administración">
 
   <div class="sidebar__brand">
+    <!-- Botón hamburguesa - solo visible en mobile vía CSS -->
+    <button class="sidebar-toggle" id="sidebar-close-btn" aria-label="Cerrar menú" style="display:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
     <img src="<?= $base ?>assets/img/logo/logo-white.png"
          alt="Salitre Admin"
-         style="height: 32px; width: auto;"
+         class="sidebar__brand-logo"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex'">
     <span class="sidebar__brand-name" style="display:none;">Panel Salitre</span>
   </div>
@@ -79,3 +88,53 @@ $nav_items = [
   </div>
 
 </aside>
+
+<script>
+/* Definimos la lógica del sidebar mobile - toggle + overlay + Escape */
+(function () {
+    var sidebar  = document.getElementById('admin-sidebar');
+    var overlay  = document.getElementById('sidebar-overlay');
+    var closeBtn = document.getElementById('sidebar-close-btn');
+
+    // El botón de apertura debe inyectarse en el topbar por JS solo cuando existe la barra superior
+    function injectToggle() {
+        var topbar = document.querySelector('.topbar');
+        if (!topbar) return;
+        var btn = document.createElement('button');
+        btn.className = 'sidebar-toggle';
+        btn.id = 'sidebar-open-btn';
+        btn.setAttribute('aria-label', 'Abrir menú');
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+        btn.addEventListener('click', openSidebar);
+        topbar.insertBefore(btn, topbar.firstChild);
+    }
+
+    function openSidebar() {
+        sidebar.classList.add('is-open');
+        overlay.classList.add('is-visible');
+        if (closeBtn) closeBtn.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('is-open');
+        overlay.classList.remove('is-visible');
+        if (closeBtn) closeBtn.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    overlay.addEventListener('click', closeSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Solo inyectamos el botón si estamos en mobile
+    if (window.innerWidth <= 768) {
+        injectToggle();
+    }
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) closeSidebar();
+    });
+}());
+</script>

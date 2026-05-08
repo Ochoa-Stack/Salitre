@@ -19,10 +19,17 @@ if (!isset($_SESSION["cliente_id"])) {
 
 // Validamos y sanitizamos los datos recibidos del formulario
 $espacio_id = filter_var($_POST["espacio_id"] ?? 0, FILTER_VALIDATE_INT);
-$fecha_entrada = filter_var($_POST["fecha_entrada"] ?? "", FILTER_SANITIZE_SPECIAL_CHARS);
-$fecha_salida = filter_var($_POST["fecha_salida"] ?? "", FILTER_SANITIZE_SPECIAL_CHARS);
+// Sanitizamos las fechas manualmente y verificamos el formato antes de continuar
+$fecha_entrada = trim($_POST["fecha_entrada"] ?? "");
+$fecha_salida  = trim($_POST["fecha_salida"]  ?? "");
 
-if (!$espacio_id || !$fecha_entrada || !$fecha_salida) {
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_entrada) ||
+    !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_salida)) {
+    header("Location: " . BASE_URL . "client/espacios/index.php?error=invalid_data");
+    exit;
+}
+
+if (!$espacio_id) {
     header("Location: " . BASE_URL . "client/espacios/index.php?error=invalid_data");
     exit;
 }

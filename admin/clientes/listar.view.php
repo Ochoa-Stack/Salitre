@@ -65,6 +65,6 @@
           <?php endif; ?>
       </div>
       <?php endif; ?>
-    </div><!-- /.data-table-wrap -->
+    </div>
 
 <?php require_once '../includes/footer.php'; ?>

@@ -1,262 +1,192 @@
 # SalitreApp
 
-**Salitre - Hotel para Nómadas Digitales**  
-_"Sal de la oficina. No del trabajo."_
+Plataforma integral de reservas para hoteles boutique: portal de clientes y panel de administración desarrollados con PHP 8.2+ nativo, MySQL y JavaScript puro.
 
-Plataforma web de reservas para un hotel boutique orientado a nómadas digitales.
-Incluye un sitio público para clientes y un panel de administración para el equipo del hotel.
+![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-informational) ![MySQL](https://img.shields.io/badge/MySQL-informational) ![License: MIT](https://img.shields.io/badge/License-MIT-informational)
 
----
-
-## Tabla de contenidos
-
-- [Descripción](#descripción)
-- [Stack](#stack)
-- [Funcionalidades](#funcionalidades)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Requisitos](#requisitos)
-- [Instalación y configuración](#instalación-y-configuración)
-- [Credenciales de prueba](#credenciales-de-prueba)
-- [Notas técnicas](#notas-técnicas)
-- [Limitaciones conocidas](#limitaciones-conocidas)
+> **Live demo:** `[deploy pending]`  
+> Test credentials available in [Local Development](#local-development).
 
 ---
 
-## Descripción
+## Overview
 
-SalitreApp es una aplicación web de reservas construida con PHP nativo, MySQL y
-JavaScript vanilla — sin frameworks, sin gestor de paquetes, sin dependencias
-de terceros más allá de Google Fonts.
+SalitreApp es una plataforma de reservas end-to-end para un hotel boutique con dos contextos de acceso diferenciados: un portal público para clientes y un panel de administración para el personal del hotel. El sistema está construido en PHP 8.2+ nativo, MySQL vía PDO, y JavaScript vanilla, sin frameworks ni dependencias de runtime externas.
 
-El proyecto tiene dos módulos diferenciados:
+La plataforma cubre el ciclo completo de reserva: exploración del catálogo de espacios, selección de fechas, gestión del carrito, simulación de pago procesada en el servidor, confirmación de reserva y control administrativo completo desde el lado del hotel. Cada decisión de negocio relevante - totales, estados, permisos - es resuelta en el servidor; el cliente no puede manipular ninguno de esos valores.
 
-- **Sitio cliente**: navegación de espacios, flujo de reserva con carrito,
-  autenticación, historial personal, agenda de eventos y formulario de contacto.
-- **Panel admin**: gestión completa de espacios, reservas, clientes, eventos
-  y mensajes de contacto. Acceso restringido por sesión.
-
-![Página de Inicio - Cliente](docs/screenshots/client-index.png)
+Las decisiones de implementación incluyen: protección CSRF con el patrón Synchronizer Token validado mediante `hash_equals()`, arquitectura MVC pasiva donde los controladores nunca producen output HTML, recálculo del total de pago desde la base de datos en el punto de adición al carrito para prevenir manipulación de sesión, sistema de diseño CSS implementado con custom properties sin preprocesador, y recuperación de contraseña con tokens de expiración a 1 hora almacenados en base de datos.
 
 ---
 
-## Stack
+## Tech Stack
 
-| Capa                 | Tecnología                              |
-| -------------------- | --------------------------------------- |
-| Backend              | PHP 8.2+ nativo, sin framework          |
-| Base de datos        | MySQL / MariaDB vía PDO                 |
-| Frontend             | HTML5, CSS3, JavaScript ES2015+         |
-| Tipografía           | Google Fonts — Playfair Display + Inter |
-| Servidor local       | XAMPP (Apache + MySQL)                  |
-| Control de versiones | Git                                     |
+- **PHP 8.2+ (nativo)** - control total del ciclo de request sin overhead de framework; `declare(strict_types=1)` aplicado en todos los controladores
+- **MySQL / MariaDB vía PDO** - prepared statements nativos con `ERRMODE_EXCEPTION` para manejo explícito de errores en la capa de datos
+- **HTML5 / CSS3 / JavaScript (ES2015+) vanilla** - cero dependencias de build; design system implementado con CSS custom properties y arquitectura de tokens en `variables.css`
+- **Google Fonts (CDN)** - única dependencia externa; fallback serif/sans-serif configurado para entornos sin acceso a red
+- **XAMPP (Apache + MySQL)** - entorno de desarrollo local; la estructura es portable a cualquier servidor con Apache y PHP 8.2+
 
----
-
-## Funcionalidades
-
-### Módulo cliente
-
-| Funcionalidad                    | Estado          |
-| -------------------------------- | --------------- |
-| Catálogo de espacios             | Implementado    |
-| Detalle de espacio con galería   | Implementado    |
-| Carrito y flujo de reserva       | Implementado    |
-| Registro y login                 | Implementado    |
-| Perfil con historial de reservas | Implementado    |
-| Agenda de eventos                | Implementado    |
-| Formulario de contacto           | Implementado    |
-| Páginas estáticas                | Implementado    |
-| Cancelación de reserva propia    | No implementada |
-| Recuperación de contraseña       | No implementada |
-
-### Panel de administración
-
-| Funcionalidad                       | Estado                      |
-| ----------------------------------- | --------------------------- |
-| Dashboard con estadísticas          | Implementado                |
-| CRUD de espacios con imagen         | Implementado                |
-| Listado y actualización de reservas | Implementado                |
-| Listado de clientes                 | Implementado (solo lectura) |
-| CRUD de eventos                     | Implementado                |
-| Mensajes de contacto                | Implementado                |
-| Paginación en listados              | Implementado                |
-| Gestión de staff                    | Solo vía SQL                |
-| Pasarela de pago                    | No implementada             |
-
-![Página de Inicio - Admin](docs/screenshots/admin-index.png)
+> No hay package manager. No hay build step. No hay librerías JavaScript externas.
 
 ---
 
-## Estructura del proyecto
+## Architecture
+
+### Patrón
+
+Cada módulo de funcionalidad contiene un controlador (`nombre.php`) que gestiona el estado de sesión, consultas a base de datos y lógica de negocio, y una plantilla (`nombre.view.php`) responsable exclusivamente del renderizado HTML. Los controladores nunca producen output directo; las plantillas no contienen lógica más allá del renderizado condicional.
+
+### Estructura de Directorios
 
 ```
 salitre/
-├── admin/                  # Panel de administración
-│   ├── includes/           # Parciales compartidos
-│   ├── espacios/           # CRUD de espacios
-│   ├── reservas/           # Listado y detalle de reservas
-│   ├── clientes/           # Listado de clientes
-│   ├── eventos/            # CRUD de eventos
-│   └── contacto/           # Mensajes de contacto
-├── client/                 # Sitio público
-│   ├── includes/           # Parciales compartidos
-│   ├── auth/               # Login, registro, perfil, logout
-│   ├── carrito/            # Carrito y procesamiento de reserva
-│   ├── espacios/           # Catálogo y detalle
-│   ├── agenda/             # Eventos
-│   ├── contacto/           # Formulario de contacto
-│   ├── servicios/          # Página estática
-│   ├── proyecto/           # Página estática "Nosotros"
-│   └── ayuda/              # Página estática FAQ
+├── admin/                  ← Panel administrativo: controladores y vistas por módulo
+│   ├── includes/           ← auth_check.php, header, sidebar, footer, helpers compartidos
+│   ├── espacios/           ← CRUD de espacios con manejo de imagen
+│   ├── reservas/           ← Listado y detalle con gestión de estado y panel de pago
+│   ├── clientes/           ← Listado de clientes (solo lectura)
+│   ├── eventos/            ← CRUD de eventos del calendario
+│   └── contacto/           ← Lectura y marcado de mensajes de contacto
+├── client/                 ← Portal público del cliente
+│   ├── includes/           ← header, nav, footer, lógica de procesamiento de contacto
+│   ├── espacios/           ← Catálogo y vista de detalle de espacios
+│   ├── carrito/            ← Carrito, pago, procesamiento y confirmación
+│   └── auth/               ← Registro, login, logout, perfil, recuperación de contraseña
 ├── assets/
-│   ├── css/                # Hojas de estilo
-│   ├── js/                 # Scripts
-│   └── img/                # Imágenes del proyecto e imágenes subidas
+│   ├── css/
+│   │   ├── shared/         ← variables.css, reset.css
+│   │   ├── client/         ← main.css y CSS por módulo del portal
+│   │   └── admin/          ← main.css, dashboard.css, crud.css, variables del tema oscuro
+│   ├── js/
+│   │   ├── client/         ← main.js, carrito.js, espacios.js
+│   │   ├── admin/          ← main.js (stub para extensiones futuras)
+│   │   └── shared/         ← alerts.js , animations.js
+│   ├── img/                ← Logotipo, SVGs de marcas de pago, imágenes de espacios
+│   └── video/              ← Hero background en MP4 y WebM
 ├── config/
-│   ├── constants.php       # Constantes globales
-│   └── database.php        # Conexión PDO
-└── database/
-    ├── setup.sql           # DDL completo + datos de prueba
-    └── migrations/         # Alteraciones posteriores al esquema inicial
+│   ├── constants.php       ← BASE_URL, constantes de negocio , rutas internas
+│   ├── database.php        ← Función conectarDB() con credenciales vía getenv() + fallback
+│   └── .htaccess           ← Bloqueo de acceso HTTP directo al directorio
+├── database/
+│   ├── setup.sql           ← Schema completo con datos de prueba y migraciones integradas
+│   └── migrations/         ← Migraciones individuales
+└── docs/screenshots/       ← Capturas de referencia de ambas vistas principales
 ```
 
-Cada módulo tiene un controlador que maneja datos y sesión,
-y una plantilla que solo renderiza HTML.
-Los controladores nunca mezclan lógica con presentación.
+### Implementación de Seguridad
+
+- **Protección CSRF** - Synchronizer Token Pattern en todos los formularios que mutan estado; tokens generados con `bin2hex(random_bytes(32))`, validados con `hash_equals()` y regenerados tras cada envío exitoso
+- **Prevención de session fixation** - `session_regenerate_id(true)` ejecuta antes de cualquier asignación de variable de sesión en login y registro
+- **Recálculo del total en servidor** - el total de pago es calculado en `agregar.php` directamente desde el registro de base de datos y almacenado en sesión; `procesar_pago.php` consume ese valor de sesión generado por el servidor, no datos del formulario de pago
+- **Prepared statements** - PDO con `ERRMODE_EXCEPTION` en toda la capa de datos; sin concatenación de queries en ningún punto del codebase
+- **Prevención de acceso directo** - `.htaccess` con `Require all denied` en los directorios `includes/` y `config/`
+- **Hashing de contraseñas** - bcrypt vía `password_hash()` / `password_verify()`; longitud mínima de 8 caracteres aplicada en el controlador
+- **Escape de output** - `htmlspecialchars()` aplicado exclusivamente en el momento de renderizado dentro de los archivos `.view.php`; los valores crudos se almacenan en base de datos sin pre-escape
 
 ---
 
-## Requisitos
+## Features
 
-- XAMPP con PHP 8.2 o superior y MySQL/MariaDB
-- Navegador moderno (Chrome, Firefox, Edge, Safari - versiones actuales)
+- Catálogo de espacios con vista de detalle y galería de imágenes; cuatro tipos de espacio con amenidades en formato JSON
+- Selección de fechas con validación de rango, cálculo de noches y resumen de costos desglosado
+- Carrito de reserva gestionado en sesión de servidor; el total no es un parámetro editable por el cliente
+- Simulación de pago con detección de marca de tarjeta por prefijo, aprobación o rechazo determinado por el dígito final del número, y registro transaccional en la tabla `pagos` dentro de una transacción PDO
+- Registro y login de clientes con validación de email único y contraseña hasheada
+- Edición de perfil: nombre, teléfono y cambio de contraseña con verificación de la contraseña actual
+- Recuperación de contraseña mediante tokens con expiración de 1 hora; tokens anteriores invalidados al generar uno nuevo; enlace escrito en `error_log()` en entorno local
+- Cancelación de reserva desde el perfil del cliente, restringida a estados `pendiente` y `confirmada`; propiedad de la reserva verificada por `cliente_id` antes de ejecutar
+- Dashboard administrativo con métricas en tiempo real: reservas pendientes, espacios activos y total de clientes registrados
+- Gestión de espacios con upload de imagen validado por MIME real, soft delete y slug URL-amigable con validación por regex
+- Listado y detalle de reservas con cambio de estado y panel de información del pago asociado
+- Listado de clientes (solo lectura)
+- CRUD completo de eventos del calendario de agenda
+- Gestión de mensajes de contacto con marcado de leído / no leído
+- Paginación del lado del servidor en todos los listados administrativos
+- Layout completamente responsivo en mobile, tablet y desktop; breakpoints en 480 px, 768 px, 1024 px y 1280 px; respeta `prefers-reduced-motion`
+- Sidebar del admin deslizable en viewports menores a 768 px con overlay y cierre por tecla Escape
+
+---
+
+## Local Development
+
+**Prerrequisitos**
+
+- XAMPP con PHP 8.2+ y MySQL / MariaDB
 - Git
 
-No se requiere ninguna herramienta de build.
+**Instalación**
 
----
-
-## Instalación y configuración
-
-### 1. Clonar el repositorio
+1. Clona el repositorio y ubícalo dentro de `htdocs`:
 
 ```bash
 git clone https://github.com/Ochoa-Stack/SalitreApp.git
+# Mover la carpeta a: C:/xampp/htdocs/salitre/
 ```
 
-Coloca la carpeta clonada dentro del directorio `htdocs` de XAMPP:
+2. Crea la base de datos:
+   - Inicia Apache y MySQL desde el Panel de Control de XAMPP
+   - Abre `http://localhost/phpmyadmin`
+   - Crea la base de datos `salitre_db` con collation `utf8mb4_unicode_ci`
+   - Importa `database/setup.sql` - incluye el schema completo, datos de prueba y todas las migraciones integradas
 
-```
-C:/xampp/htdocs/salitre/   <- Windows
-/Applications/XAMPP/htdocs/salitre/   <- macOS
-```
-
-### 2. Crear la base de datos
-
-1. Abre XAMPP y levanta los servicios **Apache** y **MySQL**.
-2. Navega a `http://localhost/phpmyadmin`.
-3. Crea una base de datos nueva llamada `salitre_db` con cotejamiento `utf8mb4_unicode_ci`.
-4. Selecciona esa base de datos, ve a la pestaña **Importar** y carga el archivo:
-   ```
-   database/setup.sql
-   ```
-5. Si existen archivos en `database/migrations/`, impórtalos en orden alfabético
-   después del `setup.sql`.
-
-### 3. Verificar configuración
-
-Revisa `config/database.php`. Los valores por defecto están listos para XAMPP estándar:
+3. Verifica `config/database.php` - los valores por defecto funcionan en instalaciones estándar de XAMPP:
 
 ```php
-$host     = 'localhost';
-$dbname   = 'salitre_db';
-$username = 'root';
-$password = '';
+$host     = getenv('DB_HOST') ?: 'localhost';
+$dbname   = getenv('DB_NAME') ?: 'salitre_db';
+$username = getenv('DB_USER') ?: 'root';
+$password = getenv('DB_PASS') ?: '';
 ```
 
-Ajusta si tu instalación de XAMPP usa credenciales distintas.
-
-Revisa `config/constants.php` y confirma que `BASE_URL` apunta a tu ruta local:
+4. Verifica `config/constants.php`:
 
 ```php
-define('BASE_URL', 'http://localhost/salitre/');
+define('BASE_URL', getenv('SALITRE_BASE_URL') ?: 'http://localhost/salitre/');
 ```
 
-### 4. Verificar directorio de uploads
-
-Confirma que el directorio de imágenes subidas existe y tiene permisos de escritura:
-
-```
-assets/img/client/espacios/
-```
-
-En Linux/macOS:
+5. Ajusta permisos del directorio de uploads (Linux / macOS únicamente):
 
 ```bash
 chmod 755 assets/img/client/espacios/
 ```
 
-### 5. Acceder al proyecto
+**Acceso**
 
-| Módulo        | URL                               |
-| ------------- | --------------------------------- |
-| Sitio cliente | `http://localhost/salitre/`       |
-| Panel admin   | `http://localhost/salitre/admin/` |
+| Módulo | URL |
+|---|---|
+| Portal cliente | `http://localhost/salitre/` |
+| Panel admin | `http://localhost/salitre/admin/` |
 
----
+**Credenciales de prueba**
 
-## Credenciales de prueba
+| Rol | Email | Contraseña |
+|---|---|---|
+| Admin | `admin@salitre.mx` | Ver `database/setup.sql` línea 92 |
+| Cliente | `cliente@prueba.mx` | `cliente123` |
 
-Estas credenciales están incluidas en el archivo `setup.sql`.
+**Simulación de pago**
 
-**Administrador**
-
-| Campo      | Valor               |
-| ---------- | ------------------- |
-| Usuario    | `admin@salitre.com` |
-| Contraseña | `Admin1234`         |
-
-**Cliente de prueba**
-
-| Campo      | Valor                 |
-| ---------- | --------------------- |
-| Usuario    | `cliente@ejemplo.com` |
-| Contraseña | `Cliente1234`         |
+| Marca | Número | CVV | Resultado |
+|---|---|---|---|
+| Visa | `4242 4242 4242 4242` | Cualquier 3 dígitos | Aprobado |
+| Mastercard | `5555 5555 5555 4444` | Cualquier 3 dígitos | Aprobado |
+| Amex | `3782 822463 10005` | Cualquier 4 dígitos | Aprobado |
+| Cualquier marca | Número terminado en dígito impar | — | Rechazado |
 
 ---
 
-## Notas técnicas
+## Roadmap
 
-**Seguridad**
-
-- Protección CSRF con Synchronizer Token Pattern en todos los formularios mutantes.
-- Contraseñas almacenadas con bcrypt (`password_hash` / `password_verify`).
-- Queries con PDO y prepared statements en toda la capa de datos.
-- Acceso directo bloqueado a `includes/` y `config/` vía `.htaccess`.
-- El total de una reserva se recalcula desde la base de datos al procesar el pago, ignorando el valor en sesión.
-
-**CSS**
-
-- `assets/css/shared/variables.css`contiene la escala tipográfica, colores semánticos, espaciado, radios, sombras y transiciones.
-- El admin tiene su propio conjunto de variables en `assets/css/admin/variables.css` con tema oscuro, heredando el color de acento del sitio cliente.
-
-**Tipografía externa**
-
-- Google Fonts es la única dependencia externa.
-  Si no está disponible, el sitio cae a `Georgia, serif` y `system-ui, sans-serif` - configurado en el fallback del CSS.
-
-**Imágenes de espacios**
-
-- Las imágenes que vienen con el proyecto son WebP, ubicadas en `assets/img/`.
-- Las imágenes subidas desde el panel admin se guardan en `assets/img/client/espacios/` y se sirven desde esa misma ruta. Solo se aceptan JPEG, PNG y WebP.
+- [ ] Gestión de cuentas de staff desde la UI (actualmente requiere acceso directo a la base de datos)
+- [ ] Búsqueda y filtros en los listados del panel administrativo
+- [ ] Integración con pasarela de pago real (Stripe / MercadoPago — actualmente simulado para entornos de desarrollo local)
+- [ ] Envío de correo en recuperación de contraseña (requiere servidor de correo configurado; en entorno local el enlace se escribe en `error_log()`)
+- [ ] Política de cancelación basada en tiempo (las reglas de ventana de cancelación no están implementadas)
+- [ ] Modificación de reserva por parte del cliente
 
 ---
 
-## Limitaciones conocidas
+## License
 
-- Los íconos de Visa, Mastercard, AMEX, PayPal y OXXO son decorativos. No hay integración de cobro real.
-- El flujo de "olvidé mi contraseña" no está implementado. Un usuario que pierde su contraseña no puede recuperarla desde la UI.
-- Un cliente puede ver sus reservas pero no cancelarlas. La cancelación solo puede hacerla un administrador desde el panel.
-- Los usuarios administradores solo pueden crearse directamente en la base de datos vía SQL. No hay interfaz para ello.
-- Los listados del admin están paginados a 20 registros por página, pero no tienen campo de búsqueda ni filtros.
-- `config/database.php` usa `root`sin contraseña - configuración estándar de XAMPP, no apta para despliegue en producción.
+Distributed under the MIT License. See `LICENSE` for details.

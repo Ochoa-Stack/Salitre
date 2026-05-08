@@ -43,9 +43,10 @@
                 <h3>Contáctanos</h3>
                 <ul class="footer-contact">
                     <li>Costa Mexicana, México</li>
-                    <li>+00 000 000 0000</li>
+                    <li>+52 656 123 456</li>
                     <li>contacto@salitre.mx</li>
                     <li>Check In: 15:00 · Check Out: 11:00</li>
+                    <li>Developed by: Elias Ochoa</li>
                 </ul>
             </div>
         </div>
