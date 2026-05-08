@@ -78,6 +78,18 @@ if ($action === "registro") {
     $email = filter_var(trim($_POST["email"] ?? ""), FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirmar_password"] ?? "";
+    $telefono = isset($_POST["telefono"]) ? trim($_POST["telefono"]) : "";
+    
+    // Validamos teléfono si se envió
+    if (!empty($telefono)) {
+        // Permitir dígitos, espacios, +, -, (, ) y máximo 15 caracteres
+        if (!preg_match('/^[0-9\s\+\-\(\)]{1,15}$/', $telefono)) {
+            header("Location: " . BASE_URL . "client/auth/registro.php?error=invalid_phone");
+            exit;
+        }
+    } else {
+        $telefono = null;
+    }
     
     // Validamos los campos obligatorios
     if (empty($nombre) || empty($email) || empty($password)) {
@@ -116,16 +128,14 @@ if ($action === "registro") {
     
     // Insertamos el nuevo cliente en la base de datos - 'INSERT'
     $stmt = $pdo->prepare(
-        "INSERT INTO clientes (nombre, email, password) VALUES (?, ?, ?)"
+        "INSERT INTO clientes (nombre, email, password, telefono) VALUES (?, ?, ?, ?)"
     );
-    $stmt->execute([$nombre, $email, $password_hash]);
+    $stmt->execute([$nombre, $email, $password_hash, $telefono]);
     
-    // Iniciamos sesión automáticamente después del registro
-    session_regenerate_id(true);
-    $_SESSION["cliente_id"] = $pdo->lastInsertId();
-    $_SESSION["cliente_nombre"] = $nombre;
-    
-    /* Restauramos el carrito pendiente si existe */
+    // Invalidamos el token usado para asegurar que la acción solo se ejecute una vez por generación
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+    /* Restauramos el carrito pendiente si existe, vinculándolo al cliente recién autenticado */
     restaurarCarrito($pdo, (int)$_SESSION["cliente_id"], false);
     
     // Redirect a carrito si hay pendiente, o a home

@@ -5,7 +5,7 @@
     <h1 class="topbar__title">Detalle de Reserva #<?php echo $id; ?></h1>
     <span class="topbar__meta">
       <a href="<?php echo htmlspecialchars(BASE_URL . 'admin/reservas/listar.php', ENT_QUOTES, 'UTF-8'); ?>"
-         style="color:#6b7280;font-size:.875rem;">← Volver al listado</a>
+         class="topbar__back-link">← Volver al listado</a>
     </span>
   </div>
 
@@ -33,7 +33,7 @@
           <dt>Teléfono</dt>
           <dd><?php echo $reserva['cliente_telefono']
               ? htmlspecialchars((string) $reserva['cliente_telefono'], ENT_QUOTES, 'UTF-8')
-              : '<span style="color:#9ca3af">—</span>'; ?></dd>
+              : '<span class="detail-empty-inline">—</span>'; ?></dd>
         </dl>
       </div>
 
@@ -73,14 +73,39 @@
         <?php if (!empty($reserva['notas'])) : ?>
         <div class="detail-notes"><?php echo htmlspecialchars((string) $reserva['notas'], ENT_QUOTES, 'UTF-8'); ?></div>
         <?php else : ?>
-        <p style="font-size:.875rem;color:#9ca3af;">Sin notas.</p>
+        <p class="detail-empty">Sin notas.</p>
         <?php endif; ?>
+      </div>
+
+      <!-- Definimos el panel de pago -->
+      <div class="detail-panel">
+        <p class="detail-panel__title">Información de Pago</p>
+        <dl class="detail-dl">
+          <dt>Estado de pago</dt>
+          <dd>
+            <span class="badge badge-<?php echo ($reserva['estado_pago'] === 'pagado') ? 'confirmada' : 'pendiente'; ?>">
+              <?php echo ucfirst($reserva['estado_pago']); ?>
+            </span>
+          </dd>
+          <?php if ($pago_detalle): ?>
+            <dt>Método</dt>
+            <dd><?php echo ucfirst($pago_detalle['metodo']); ?></dd>
+            <?php if ($pago_detalle['marca_tarjeta']): ?>
+              <dt>Tarjeta</dt>
+              <dd><?php echo htmlspecialchars($pago_detalle['marca_tarjeta']); ?> ****<?php echo $pago_detalle['ultimos4']; ?></dd>
+            <?php endif; ?>
+            <dt>Monto</dt>
+            <dd>$<?php echo number_format((float)$pago_detalle['monto'], 2); ?> USD</dd>
+            <dt>Procesado en</dt>
+            <dd><?php echo date("d/m/Y H:i", strtotime($pago_detalle['procesado_en'])); ?></dd>
+          <?php endif; ?>
+        </dl>
       </div>
 
       <!-- Definimos el panel de gestión de estado — full width -->
       <div class="detail-panel detail-panel--span2">
         <p class="detail-panel__title">Gestión de Estado</p>
-        <p style="margin-bottom:.875rem;font-size:.875rem;color:#6b7280;">
+        <p class="detail-status-label">
           Estado actual:
           <span class="badge badge-<?php echo htmlspecialchars($estado_actual, ENT_QUOTES, 'UTF-8'); ?>">
             <?php echo ucfirst($estado_actual); ?>

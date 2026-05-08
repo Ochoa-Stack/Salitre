@@ -2,6 +2,7 @@
 /* 'admin/espacios/editar.php' es la página para editar un espacio existente desde el panel de administración */
 declare(strict_types=1);
 require_once '../includes/auth_check.php';
+require_once '../includes/helpers.php';
 require_once dirname(__DIR__, 2) . '/config/constants.php';
 require_once dirname(__DIR__, 2) . '/config/database.php';
 
@@ -77,32 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $foto_nombre = $espacio['foto_principal'];
-        if (isset($_FILES['foto_principal']) && $_FILES['foto_principal']['error'] === UPLOAD_ERR_OK) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $_FILES['foto_principal']['tmp_name']);
-            finfo_close($finfo);
-
-            $allowed_mimes = ['image/jpeg', 'image/png', 'image/webp'];
-            if (!in_array($mime, $allowed_mimes, true)) {
-                $errors[] = 'Formato de imagen no permitido. Solo JPG, PNG o WEBP.';
-            } else {
-                $ext = pathinfo($_FILES['foto_principal']['name'], PATHINFO_EXTENSION);
-                $nuevo_nombre = uniqid('esp_') . '.' . $ext;
-                
-                if (!is_dir(UPLOAD_PATH)) {
-                    mkdir(UPLOAD_PATH, 0777, true);
-                }
-                if (move_uploaded_file($_FILES['foto_principal']['tmp_name'], UPLOAD_PATH . $nuevo_nombre)) {
-                    if ($foto_nombre && file_exists(UPLOAD_PATH . $foto_nombre)) {
-                        unlink(UPLOAD_PATH . $foto_nombre);
-                    }
-                    $foto_nombre = $nuevo_nombre;
-                } else {
-                    $errors[] = 'Error al subir la nueva imagen.';
-                }
-            }
-        }
+        // Delegamos el upload y la eliminación del archivo anterior a la función compartida
+        $foto_nombre = procesarUploadImagen('foto_principal', $errors, $espacio['foto_principal']);
 
         if (empty($errors)) {
             try {

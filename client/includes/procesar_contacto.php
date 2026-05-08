@@ -10,9 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(403);
         die('CSRF token validation failed');
     }
+    // Regeneramos el token tras cada validación para prevenir ataques de replay
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-    /* Validamos y procesamos el formulario de contacto - prevención de XSS e inyecciones */
+    /* Validamos y procesamos el formulario de contacto con enfoque en prevención de inyecciones.
+       Los datos se guardan sin transformar para mantener la integridad en la base de datos. */
 
     $nombre = trim($_POST['nombre']  ?? '');
     $email  = filter_var(trim($_POST['email']   ?? ''), FILTER_SANITIZE_EMAIL);

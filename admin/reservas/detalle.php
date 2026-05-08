@@ -51,6 +51,7 @@ try {
            r.noches,
            r.precio_total,
            r.estado,
+           r.estado_pago,
            r.notas,
            r.creado_en,
            c.id        AS cliente_id,
@@ -69,6 +70,14 @@ try {
     );
     $stmt->execute([':id' => $id]);
     $reserva = $stmt->fetch();
+
+    // Obtenemos información detallada del pago si existe
+    $pago_detalle = null;
+    if ($reserva) {
+        $stmtP = $pdo->prepare("SELECT * FROM pagos WHERE reserva_id = ? LIMIT 1");
+        $stmtP->execute([$id]);
+        $pago_detalle = $stmtP->fetch();
+    }
 } catch (Throwable $e) {
     error_log('Admin reservas/detalle SELECT: ' . $e->getMessage());
 }

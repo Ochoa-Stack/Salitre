@@ -3,7 +3,7 @@
 
   /* Definimos los estilos de los colores base */
   --color-bg:           #F8F8F5;   /* 60% — Fondos principales */
-  --color-text:         #2C3539;   /* 30% — Texto base         */
+  --color-text:         #2c3539;   /* 30% — Texto base         */
   --color-accent:       #6C8062;   /* 10% — Botones, acento    */
 
   /* Definimos las variaciones de los acentos */
@@ -79,5 +79,8 @@
    /* Definimos los estilos para las transiciones */
   --transition:       all 0.2s ease;
   --transition-slow:  all 0.4s ease;
+
+  /* Definimos las medidas fijas de componentes de layout */
+  --navbar-height: 72px;
 
 }

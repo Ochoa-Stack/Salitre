@@ -275,3 +275,28 @@
   .detail-grid { grid-template-columns: 1fr; }
   .detail-panel--span2 { grid-column: 1; }
 }
+
+/* Clases semánticas de apoyo para detalle.view.php */
+.topbar__back-link {
+  color: var(--adm-muted);
+  font-size: var(--adm-text-sm, 0.875rem);
+  text-decoration: none;
+}
+.topbar__back-link:hover {
+  color: var(--adm-text);
+}
+
+.detail-empty {
+  font-size: 0.875rem;
+  color: var(--adm-muted);
+}
+
+.detail-empty-inline {
+  color: var(--adm-muted);
+}
+
+.detail-status-label {
+  margin-bottom: 0.875rem;
+  font-size: 0.875rem;
+  color: var(--adm-muted);
+}

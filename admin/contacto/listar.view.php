@@ -42,11 +42,13 @@
 <?php foreach ($mensajes as $m) :
     $id    = (int) $m['id'];
     $leido = (bool) $m['leido'];
+
     // Preparamos una versión corta del mensaje para mostrar en la tabla - solo 80 caracteres
     $msg_raw    = (string) $m['mensaje'];
     $msg_corto  = mb_strlen($msg_raw) > 80
         ? htmlspecialchars(mb_substr($msg_raw, 0, 80), ENT_QUOTES, 'UTF-8') . '&hellip;'
         : htmlspecialchars($msg_raw, ENT_QUOTES, 'UTF-8');
+        
     // Formateamos la fecha de creación del mensaje para mostrarla en formato 'd/m/Y H:i'
     $fecha_obj = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', (string) $m['creado_en']);
     $fecha_fmt = $fecha_obj

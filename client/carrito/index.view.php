@@ -59,12 +59,9 @@
                     <span class="value">$<?= number_format((float)$cart['total'], 2) ?></span>
                 </div>
 
-                <form id="form-carrito-checkout" action="<?= $base ?>client/carrito/procesar_reserva.php" method="POST">
-<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                    <input type="hidden" name="cart_intent" value="1">
-                    <button type="submit" class="btn btn-primary btn-lg w-full mt-6" id="btn-request">Solicitar Reserva</button>
-                </form>
+                <div class="mt-6">
+                    <a href="<?= $base ?>client/carrito/pago.php" class="btn btn-primary btn-lg w-full" id="btn-request" style="justify-content:center;">Proceder al pago</a>
+                </div>
 
                 <div class="carrito-politicas mt-6">
                     <h3>Políticas de Cancelación</h3>

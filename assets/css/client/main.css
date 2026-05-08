@@ -50,8 +50,6 @@
 }
 
 /* Definimos la estructura para el menú de navegación y sus componentes */
-
-/* Componentes comunes (Hamburger, Overlay, Enlaces, Dropdown) */
 .nav-burger {
     display: flex;
     flex-direction: column;
@@ -128,7 +126,7 @@ body.menu-open {
 /* Definimos la estructura para el menú desplegable independiente en desktop */
 .nav-dropdown {
     position: fixed;
-    top: 80px; /* Debajo del navbar */
+    top: var(--navbar-height);
     right: 0;
     width: 400px;
     max-width: 90vw;
@@ -234,7 +232,7 @@ body.menu-open {
     }
 }
 
-/* Responsive: Tablet y Mobile (hamburguesa) */
+/* Responsive para Tablet y Mobile del menú hamburguesa */
 @media (max-width: 1279px) {
     .nav-menu {
         position: fixed;
@@ -274,7 +272,6 @@ body.menu-open {
 }
 
 /* Definimos la estructura para el diseño global de las páginas internas del cliente */
-
 /* Definimos variables globales para los botones */
 .btn {
   display: inline-flex;
@@ -295,7 +292,7 @@ body.menu-open {
   letter-spacing: 0.01em;
 }
 
-/* Definimos el botón primario — fondo acento */
+/* Definimos el botón primario - fondo acento */
 .btn-primary {
   background-color: var(--color-accent);
   color: #ffffff;
@@ -375,8 +372,6 @@ body.menu-open {
   outline-offset: 2px;
 }
 
-
-
 /* Definimos la estructura global para las animaciones de fade-in y fade-up */
 [data-animate] {
   opacity: 0;
@@ -418,7 +413,7 @@ body.menu-open {
 [data-animate]:nth-child(5)  { transition-delay: 320ms; }
 [data-animate]:nth-child(6)  { transition-delay: 400ms; }
 
-/* Definimos la clase legacy — soporta el fade-in usado en 'client/index.php' */
+/* Definimos la clase legacy - soporta el fade-in usado en 'client/index.php' */
 .fade-in {
   opacity: 0;
   transform: translateY(24px);
@@ -510,7 +505,7 @@ body.menu-open {
 
 /* Definimos el offset para navbar fixed */
 .page-offset {
-  padding-top: 72px;
+  padding-top: var(--navbar-height);
 }
 
 /* Definimos el divider */
@@ -727,7 +722,7 @@ body.menu-open {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    pointer-events: none; /* Permite clicks a través del contenedor */
+    pointer-events: none;    /* Permite clicks a través del contenedor */
 }
 
 .salitre-alert {
@@ -740,7 +735,7 @@ body.menu-open {
     gap: var(--space-4);
     min-width: 300px;
     max-width: 400px;
-    pointer-events: auto; /* Reactiva clicks en la alerta */
+    pointer-events: auto;    /* Reactiva clicks en la alerta */
     position: relative;
     overflow: hidden;
     transform: translateX(120%);
@@ -766,8 +761,8 @@ body.menu-open {
 
 .alert-success .alert-icon { background: var(--color-success); }
 .alert-error .alert-icon { background: var(--color-danger); }
-.alert-warning .alert-icon { background: #f59e0b; }
-.alert-info .alert-icon { background: #3b82f6; }
+.alert-warning .alert-icon { background: var(--color-warning); }
+.alert-info .alert-icon { background: var(--color-info); }
 
 .alert-content {
     flex-grow: 1;
@@ -804,7 +799,7 @@ body.menu-open {
     bottom: 0;
     left: 0;
     height: 3px;
-    background: rgba(0,0,0,0.1);
+    background: var(--color-text-muted);
     width: 100%;
     transform-origin: left;
     animation: alert-progress var(--duration) linear forwards;
@@ -832,5 +827,3 @@ body.menu-open {
         min-width: 0;
     }
 }
-
-/* Fin del archivo main.css - Parches eliminados */

@@ -59,15 +59,15 @@
                 <span class="badge badge--active">&#10003; Activo</span>
               <?php else : ?>
                 <span class="badge badge--inactive">Inactivo</span>
-              <?php endif; ?>
+                <?php endif; ?>
             </td>
             <td>
               <div class="actions-cell">
                 <a class="btn btn--edit" href="<?php echo $edit_href; ?>">Editar</a>
                 <?php if ($activo) : ?>
                 <form method="post" action="<?php echo $del_action; ?>" onsubmit="return confirm('¿Desactivar este espacio?');">
-<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                  <?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
+                  <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
                   <button class="btn btn--danger" type="submit">Desactivar</button>
                 </form>

@@ -13,6 +13,60 @@ if (!isset($_SESSION["cliente_id"])) {
 
 $cliente_id = $_SESSION["cliente_id"];
 $db = conectarDB();
+$success_msg = "";
+$error_msg = "";
+
+/* Procesar actualización de perfil */
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['action'] === 'update_profile') {
+    // Validar CSRF
+    if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        http_response_code(403);
+        die('CSRF token validation failed');
+    }
+    
+    $nombre = trim($_POST["nombre"] ?? "");
+    $telefono = trim($_POST["telefono"] ?? "");
+    $new_password = $_POST["password"] ?? "";
+    
+    if (empty($nombre)) {
+        $error_msg = "El nombre no puede estar vacío.";
+    } else {
+        // Validar teléfono
+        if (!empty($telefono)) {
+            if (!preg_match('/^[0-9\s\+\-\(\)]{1,15}$/', $telefono)) {
+                $error_msg = "Formato de teléfono inválido.";
+            }
+        } else {
+            $telefono = null;
+        }
+        
+        if (empty($error_msg)) {
+            try {
+                if (!empty($new_password)) {
+                    if (strlen($new_password) < 8) {
+                        $error_msg = "La nueva contraseña debe tener al menos 8 caracteres.";
+                    } else {
+                        $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+                        $stmt = $db->prepare("UPDATE clientes SET nombre = ?, telefono = ?, password = ? WHERE id = ?");
+                        $stmt->execute([$nombre, $telefono, $password_hash, $cliente_id]);
+                        $success_msg = "Perfil y contraseña actualizados correctamente.";
+                        // Sincronizamos el nombre en sesión para reflejar el cambio en la navegación
+                        $_SESSION["cliente_nombre"] = $nombre;
+                    }
+                } else {
+                    // Si la contraseña viene vacía, actualizamos únicamente los datos de contacto
+                    $stmt = $db->prepare("UPDATE clientes SET nombre = ?, telefono = ? WHERE id = ?");
+                    $stmt->execute([$nombre, $telefono, $cliente_id]);
+                    $success_msg = "Perfil actualizado correctamente.";
+                    $_SESSION["cliente_nombre"] = $nombre;
+                }
+            } catch (PDOException $e) {
+                error_log("Error actualizando perfil: " . $e->getMessage());
+                $error_msg = "Error interno al actualizar el perfil.";
+            }
+        }
+    }
+}
 
 /* Obtenemos los datos del cliente con 'prepared statement' */
 $stmt = $db->prepare("SELECT * FROM clientes WHERE id = ?");
