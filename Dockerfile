@@ -27,8 +27,8 @@ RUN echo 'server { \
         include fastcgi_params; \
     } \
 }' > /etc/nginx/sites-available/default \
-    && ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
-    && rm -f /etc/nginx/sites-enabled/default
+    && rm -f /etc/nginx/sites-enabled/default \
+    && ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Permisos correctos (aplicados DESPUÉS de copiar)
 RUN chown -R www-data:www-data /var/www/html \
