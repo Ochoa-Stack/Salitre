@@ -18,7 +18,8 @@ if (!isset($_SESSION["carrito"]) || empty($_SESSION["carrito"])) {
 }
 
 $pdo = conectarDB();
-$stmt = $pdo->prepare("SELECT * FROM espacios WHERE id = ? AND activo = 1");
+// Traemos solo los datos esenciales para previsualizar el carrito
+$stmt = $pdo->prepare("SELECT id, nombre, tipo, foto_principal, precio_noche FROM espacios WHERE id = ? AND activo = 1");
 $stmt->execute([$_SESSION["carrito"]["espacio_id"]]);
 $espacio = $stmt->fetch();
 

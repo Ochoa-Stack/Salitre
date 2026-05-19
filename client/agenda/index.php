@@ -8,7 +8,9 @@ $eventos = [];
 try {
     $pdo = conectarDB();
     $stmt = $pdo->prepare(
-        "SELECT * FROM eventos WHERE activo = 1 AND fecha_evento >= CURDATE() 
+        // Traemos solo los datos requeridos para renderizar la agenda
+        "SELECT id, titulo, descripcion, fecha_evento, hora_inicio, hora_fin, cupo 
+         FROM eventos WHERE activo = 1 AND fecha_evento >= CURDATE() 
          ORDER BY fecha_evento ASC, hora_inicio ASC"
     );
     $stmt->execute();

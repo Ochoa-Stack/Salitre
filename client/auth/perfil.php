@@ -71,14 +71,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
     }
 }
 
-/* Obtenemos los datos del cliente con 'prepared statement' */
-$stmt = $db->prepare("SELECT * FROM clientes WHERE id = ?");
+/* Obtenemos los datos esenciales del cliente con 'prepared statement' */
+// Traemos solo los datos necesarios para mostrar en el perfil
+$stmt = $db->prepare("SELECT id, nombre, email, telefono FROM clientes WHERE id = ?");
 $stmt->execute([$cliente_id]);
 $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
 
 /* Obtenemos las reservas del cliente con 'JOIN' a espacios */
+// Traemos únicamente las columnas requeridas para el historial
 $stmt = $db->prepare("
-    SELECT r.*, e.nombre as espacio_nombre, e.slug as espacio_slug
+    SELECT r.id, r.fecha_entrada, r.fecha_salida, r.estado, r.precio_total, e.nombre as espacio_nombre, e.slug as espacio_slug
     FROM reservas r
     JOIN espacios e ON r.espacio_id = e.id
     WHERE r.cliente_id = ?

@@ -5,7 +5,8 @@ require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
 
 $pdo = conectarDB();
-$stmt = $pdo->prepare("SELECT * FROM espacios WHERE activo = 1 ORDER BY precio_noche ASC");
+// Traemos solo los datos necesarios para renderizar las tarjetas del catálogo público
+$stmt = $pdo->prepare("SELECT slug, nombre, tipo, capacidad, precio_noche, amenidades, foto_principal FROM espacios WHERE activo = 1 ORDER BY precio_noche ASC");
 $stmt->execute();
 $espacios = $stmt->fetchAll();
 
