@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y nginx \
 WORKDIR /var/www/html
 COPY . /var/www/html/
 
-# Configuración de Nginx CORRECTA
+# Configuración de Nginx
 RUN echo 'server { \
     listen 8080; \
     server_name localhost; \
@@ -34,13 +34,13 @@ RUN echo 'server { \
     && ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
     && rm -f /etc/nginx/sites-enabled/default
 
-# Permisos CORRECTOS (después de copiar)
+# Permisos
 RUN chown -R www-data:www-data /var/www/html \
     && find /var/www/html -type d -exec chmod 755 {} \; \
     && find /var/www/html -type f -exec chmod 644 {} \; \
     && chmod -R 777 /var/www/html/assets/img/client/espacios
 
-# Inicio
-CMD bash -c "sed -i \"s/listen 8080/listen \${PORT}/g\" /etc/nginx/sites-available/default && php-fpm8.2 -D && nginx -g 'daemon off;'"
+# Inicio con el comando CORRECTO: php-fpm (no php-fpm8.2)
+CMD bash -c "sed -i \"s/listen 8080/listen \${PORT}/g\" /etc/nginx/sites-available/default && php-fpm -D && nginx -g 'daemon off;'"
 
 EXPOSE ${PORT}
