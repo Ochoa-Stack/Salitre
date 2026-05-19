@@ -1,39 +1,46 @@
 FROM php:8.2-apache
 
-# 1. Instalar extensiones necesarias
+# Instalar extensiones
 RUN docker-php-ext-install pdo pdo_mysql
 
-# 2. LIMPIEZA AGRESIVA DE MPMs (El truco para evitar el crash)
-# Borramos los archivos de configuración de los MPMs que NO queremos
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.* \
-    && rm -f /etc/apache2/mods-available/mpm_event.* \
-    && rm -f /etc/apache2/mods-available/mpm_worker.*
-
-# Aseguramos que solo exista y esté activo el prefork (necesario para PHP)
-RUN a2enmod mpm_prefork rewrite
-
-# 3. Configurar puerto dinámico para Railway
+# Configurar variables de entorno
 ENV PORT=8080
 ENV APACHE_DOCUMENT_ROOT=/var/www/html
 
-# Actualizar el DocumentRoot en la config de Apache
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+# Habilitar solo mpm_prefork y rewrite (desactivar otros MPMs)
+RUN a2dismod mpm_event mpm_worker && \
+    a2enmod mpm_prefork rewrite && \
+    # Configurar el puerto en Apache
+    echo "Listen ${PORT}" > /etc/apache2/ports.conf && \
+    # Configurar VirtualHost
+    echo "<VirtualHost *:${PORT}>" > /etc/apache2/sites-available/000-default.conf && \
+    echo "    DocumentRoot ${APACHE_DOCUMENT_ROOT}" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "    <Directory ${APACHE_DOCUMENT_ROOT}>" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "        Options Indexes FollowSymLinks" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "        AllowOverride All" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "        Require all granted" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "    </Directory>" >> /etc/apache2/sites-available/000-default.conf && \
+    echo "</VirtualHost>" >> /etc/apache2/sites-available/000-default.conf
 
-# Cambiar el puerto de escucha de 80 a la variable de entorno ${PORT}
-RUN sed -ri -e 's!Listen 80!Listen ${PORT}!g' /etc/apache2/ports.conf
-RUN sed -ri -e 's!<VirtualHost \*:80!<VirtualHost *:${PORT}>!g' /etc/apache2/sites-available/*.conf
-
-# 4. Permisos para uploads
+# Configurar permisos
 WORKDIR /var/www/html
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && mkdir -p /var/www/html/assets/img/client/espacios \
-    && chmod -R 777 /var/www/html/assets/img/client/espacios
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html && \
+    mkdir -p /var/www/html/assets/img/client/espacios && \
+    chmod -R 777 /var/www/html/assets/img/client/espacios
 
-# 5. Copiar código
+# Copiar código
 COPY . /var/www/html/
 
-# 6. Exponer puerto y arrancar
+# Crear script de entrada personalizado
+RUN echo '#!/bin/bash' > /entrypoint.sh && \
+    echo 'export PORT=${PORT:-8080}' >> /entrypoint.sh && \
+    echo 'echo "Starting Apache on port $PORT"' >> /entrypoint.sh && \
+    echo 'sed -i "s/Listen .*/Listen $PORT/g" /etc/apache2/ports.conf' >> /entrypoint.sh && \
+    echo 'sed -i "s/VirtualHost \*:.*/VirtualHost *:$PORT/g" /etc/apache2/sites-available/000-default.conf' >> /entrypoint.sh && \
+    echo 'apache2-foreground' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
 EXPOSE ${PORT}
-CMD ["apache2-foreground"]
+
+ENTRYPOINT ["/entrypoint.sh"]
