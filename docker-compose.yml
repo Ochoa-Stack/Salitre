@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: salitre_app
+    ports:
+      - "8080:80"
+    volumes:
+      # Mapeo para desarrollo en caliente
+      - .:/var/www/html
+      # Previene que la carpeta vendor local sobrescriba o se copie innecesariamente
+      - /var/www/html/vendor
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=secret
+      - DB_NAME=salitre_db
+    depends_on:
+      - db
+    networks:
+      - salitre_network
+
+  db:
+    image: mariadb:10.6
+    container_name: salitre_db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      MARIADB_DATABASE: salitre_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Autoejecutar setup.sql al crear la DB por primera vez
+      - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - salitre_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: salitre_pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    depends_on:
+      - db
+    networks:
+      - salitre_network
+
+volumes:
+  db_data:
+
+networks:
+  salitre_network:
+    driver: bridge

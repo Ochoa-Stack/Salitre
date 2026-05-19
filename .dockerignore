@@ -1,0 +1,15 @@
+.git
+.gitignore
+.vscode
+.idea
+vendor/
+node_modules/
+tests/
+phpstan.neon
+phpunit.xml
+composer.json
+composer.lock
+database/
+README.md
+docker-compose.yml
+Dockerfile

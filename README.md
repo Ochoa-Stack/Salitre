@@ -1,192 +1,104 @@
-# SalitreApp
+# Salitre
 
-Plataforma integral de reservas para hoteles boutique: portal de clientes y panel de administración desarrollados con PHP 8.2+ nativo, MySQL y JavaScript puro.
+Plataforma integral de reservas para hoteles boutique: portal de clientes y panel de administración desarrollados con **PHP 8.2+ Enterprise-Grade**, **MariaDB** y JavaScript puro. Diseñado bajo principios de escalabilidad, seguridad y análisis de datos continuo.
 
-![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-informational) ![MySQL](https://img.shields.io/badge/MySQL-informational) ![License: MIT](https://img.shields.io/badge/License-MIT-informational)
+![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-informational) ![MariaDB 10.6](https://img.shields.io/badge/MariaDB-10.6-informational) ![License: MIT](https://img.shields.io/badge/License-MIT-informational) ![PHPStan](https://img.shields.io/badge/PHPStan-Level%206-brightgreen) ![PHPUnit](https://img.shields.io/badge/PHPUnit-100%25-brightgreen)
 
 > **Live demo:** `[deploy pending]`  
-> Test credentials available in [Local Development](#local-development).
+> Credenciales de prueba disponibles en [Local Development](#despliegue-local-docker).
 
 ---
 
-## Overview
+## Resumen
 
-SalitreApp es una plataforma de reservas end-to-end para un hotel boutique con dos contextos de acceso diferenciados: un portal público para clientes y un panel de administración para el personal del hotel. El sistema está construido en PHP 8.2+ nativo, MySQL vía PDO, y JavaScript vanilla, sin frameworks ni dependencias de runtime externas.
+SalitreApp es una plataforma de reservas end-to-end con dos contextos de acceso diferenciados: un portal público para clientes y un panel de administración para el personal del hotel. 
 
-La plataforma cubre el ciclo completo de reserva: exploración del catálogo de espacios, selección de fechas, gestión del carrito, simulación de pago procesada en el servidor, confirmación de reserva y control administrativo completo desde el lado del hotel. Cada decisión de negocio relevante - totales, estados, permisos - es resuelta en el servidor; el cliente no puede manipular ninguno de esos valores.
-
-Las decisiones de implementación incluyen: protección CSRF con el patrón Synchronizer Token validado mediante `hash_equals()`, arquitectura MVC pasiva donde los controladores nunca producen output HTML, recálculo del total de pago desde la base de datos en el punto de adición al carrito para prevenir manipulación de sesión, sistema de diseño CSS implementado con custom properties sin preprocesador, y recuperación de contraseña con tokens de expiración a 1 hora almacenados en base de datos.
+El sistema destaca por su cumplimiento estricto de la regla de **cero dependencias en runtime**. Esto significa que la aplicación en producción corre íntegramente con PHP nativo y PDO, garantizando un rendimiento y control de memoria excepcionales, reservando las dependencias externas (Composer) únicamente para las herramientas de Aseguramiento de Calidad.
 
 ---
 
-## Tech Stack
+## Arquitectura
 
-- **PHP 8.2+ (nativo)** - control total del ciclo de request sin overhead de framework; `declare(strict_types=1)` aplicado en todos los controladores
-- **MySQL / MariaDB vía PDO** - prepared statements nativos con `ERRMODE_EXCEPTION` para manejo explícito de errores en la capa de datos
-- **HTML5 / CSS3 / JavaScript (ES2015+) vanilla** - cero dependencias de build; design system implementado con CSS custom properties y arquitectura de tokens en `variables.css`
-- **Google Fonts (CDN)** - única dependencia externa; fallback serif/sans-serif configurado para entornos sin acceso a red
-- **XAMPP (Apache + MySQL)** - entorno de desarrollo local; la estructura es portable a cualquier servidor con Apache y PHP 8.2+
+El proyecto se apega a rigurosos estándares de desarrollo de software:
 
-> No hay package manager. No hay build step. No hay librerías JavaScript externas.
+### MVC Pasivo
+Cada módulo de funcionalidad mantiene una estricta separación de responsabilidades:
+- **Controladores (`*.php`)**: Gestionan la sesión, consultas a base de datos mediante clases de configuración `strict_types=1`, cálculos de negocio en helpers centralizados (DRY) y nunca producen output directo.
+- **Plantillas (`*.view.php`)**: Responsables exclusivamente del renderizado HTML. Todas las variables se protegen con `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')` de forma obligatoria.
+
+### Prevención Anti-Manipulación para Carrito y Pagos
+El total de pago se recalcula obligatoriamente desde la base de datos en el controlador mediante el helper financiero y se inyecta en la capa de sesión segura. No existen parámetros alterables por el usuario.
+
+### Security by Design
+- **Protección CSRF Centralizada:** Implementación de tokens efímeros validados en tiempo de procesamiento con `hash_equals()`. Todo formulario y mutación de estado delega la generación de tokens al controlador.
+- **Prevención de session fixation:** Regeneración de IDs en cada salto de contexto de autenticación.
+- **Tipado Fuerte:** Declaración `strict_types=1` obligatoria y cast explícito en todos los accesos a datos.
 
 ---
 
-## Architecture
+## ML Prep
 
-### Patrón
+La persistencia de datos de Salitre ha sido migrada para integrarse nativamente con infraestructuras de Data Science, eliminando el sesgo temporal y habilitando la trazabilidad.
 
-Cada módulo de funcionalidad contiene un controlador (`nombre.php`) que gestiona el estado de sesión, consultas a base de datos y lógica de negocio, y una plantilla (`nombre.view.php`) responsable exclusivamente del renderizado HTML. Los controladores nunca producen output directo; las plantillas no contienen lógica más allá del renderizado condicional.
+- **Change Data Capture:** Rastreo automático de mutaciones mediante columnas `updated_at` en espacios y reservas.
+- **Normalización para One-Hot Encoding:** Separación de características categóricas (amenidades) mediante tablas puente.
+- **Series de Tiempo Continuas:** Vista analítica `v_ocupacion_diaria` construida sobre una matriz cuadrícula de 365 días mediante expresiones CTE recursivas, garantizando que el sesgo de supervivencia matemática se elimine para futuros modelos estadísticos y de Machine Learning predictivos.
+- **Queries Óptimas (No SELECT *):** Reducción de overhead de memoria mediante selección explícita de columnas en todo el ecosistema.
 
-### Estructura de Directorios
+---
 
-```
-salitre/
-├── admin/                  ← Panel administrativo: controladores y vistas por módulo
-│   ├── includes/           ← auth_check.php, header, sidebar, footer, helpers compartidos
-│   ├── espacios/           ← CRUD de espacios con manejo de imagen
-│   ├── reservas/           ← Listado y detalle con gestión de estado y panel de pago
-│   ├── clientes/           ← Listado de clientes (solo lectura)
-│   ├── eventos/            ← CRUD de eventos del calendario
-│   └── contacto/           ← Lectura y marcado de mensajes de contacto
-├── client/                 ← Portal público del cliente
-│   ├── includes/           ← header, nav, footer, lógica de procesamiento de contacto
-│   ├── espacios/           ← Catálogo y vista de detalle de espacios
-│   ├── carrito/            ← Carrito, pago, procesamiento y confirmación
-│   └── auth/               ← Registro, login, logout, perfil, recuperación de contraseña
-├── assets/
-│   ├── css/
-│   │   ├── shared/         ← variables.css, reset.css
-│   │   ├── client/         ← main.css y CSS por módulo del portal
-│   │   └── admin/          ← main.css, dashboard.css, crud.css, variables del tema oscuro
-│   ├── js/
-│   │   ├── client/         ← main.js, carrito.js, espacios.js
-│   │   ├── admin/          ← main.js (stub para extensiones futuras)
-│   │   └── shared/         ← alerts.js , animations.js
-│   ├── img/                ← Logotipo, SVGs de marcas de pago, imágenes de espacios
-│   └── video/              ← Hero background en MP4 y WebM
-├── config/
-│   ├── constants.php       ← BASE_URL, constantes de negocio , rutas internas
-│   ├── database.php        ← Función conectarDB() con credenciales vía getenv() + fallback
-│   └── .htaccess           ← Bloqueo de acceso HTTP directo al directorio
-├── database/
-│   ├── setup.sql           ← Schema completo con datos de prueba y migraciones integradas
-│   └── migrations/         ← Migraciones individuales
-└── docs/screenshots/       ← Capturas de referencia de ambas vistas principales
+## Aseguramineto de la Calidad y Dev-Tooling
+
+Salitre incorpora un pipeline robusto de análisis estático y pruebas en su entorno local (totalmente excluido de los despliegues de producción para mantener el contenedor limpio).
+
+```bash
+# Instalar herramientas en modo local
+composer install
+
+# Ejecutar la suite completa de calidad (PHPStan, CodeSniffer, Tests)
+composer run check
 ```
 
-### Implementación de Seguridad
-
-- **Protección CSRF** - Synchronizer Token Pattern en todos los formularios que mutan estado; tokens generados con `bin2hex(random_bytes(32))`, validados con `hash_equals()` y regenerados tras cada envío exitoso
-- **Prevención de session fixation** - `session_regenerate_id(true)` ejecuta antes de cualquier asignación de variable de sesión en login y registro
-- **Recálculo del total en servidor** - el total de pago es calculado en `agregar.php` directamente desde el registro de base de datos y almacenado en sesión; `procesar_pago.php` consume ese valor de sesión generado por el servidor, no datos del formulario de pago
-- **Prepared statements** - PDO con `ERRMODE_EXCEPTION` en toda la capa de datos; sin concatenación de queries en ningún punto del codebase
-- **Prevención de acceso directo** - `.htaccess` con `Require all denied` en los directorios `includes/` y `config/`
-- **Hashing de contraseñas** - bcrypt vía `password_hash()` / `password_verify()`; longitud mínima de 8 caracteres aplicada en el controlador
-- **Escape de output** - `htmlspecialchars()` aplicado exclusivamente en el momento de renderizado dentro de los archivos `.view.php`; los valores crudos se almacenan en base de datos sin pre-escape
-
 ---
 
-## Features
+## Despliegue Local (Docker)
 
-- Catálogo de espacios con vista de detalle y galería de imágenes; cuatro tipos de espacio con amenidades en formato JSON
-- Selección de fechas con validación de rango, cálculo de noches y resumen de costos desglosado
-- Carrito de reserva gestionado en sesión de servidor; el total no es un parámetro editable por el cliente
-- Simulación de pago con detección de marca de tarjeta por prefijo, aprobación o rechazo determinado por el dígito final del número, y registro transaccional en la tabla `pagos` dentro de una transacción PDO
-- Registro y login de clientes con validación de email único y contraseña hasheada
-- Edición de perfil: nombre, teléfono y cambio de contraseña con verificación de la contraseña actual
-- Recuperación de contraseña mediante tokens con expiración de 1 hora; tokens anteriores invalidados al generar uno nuevo; enlace escrito en `error_log()` en entorno local
-- Cancelación de reserva desde el perfil del cliente, restringida a estados `pendiente` y `confirmada`; propiedad de la reserva verificada por `cliente_id` antes de ejecutar
-- Dashboard administrativo con métricas en tiempo real: reservas pendientes, espacios activos y total de clientes registrados
-- Gestión de espacios con upload de imagen validado por MIME real, soft delete y slug URL-amigable con validación por regex
-- Listado y detalle de reservas con cambio de estado y panel de información del pago asociado
-- Listado de clientes (solo lectura)
-- CRUD completo de eventos del calendario de agenda
-- Gestión de mensajes de contacto con marcado de leído / no leído
-- Paginación del lado del servidor en todos los listados administrativos
-- Layout completamente responsivo en mobile, tablet y desktop; breakpoints en 480 px, 768 px, 1024 px y 1280 px; respeta `prefers-reduced-motion`
-- Sidebar del admin deslizable en viewports menores a 768 px con overlay y cierre por tecla Escape
-
----
-
-## Local Development
+El proyecto está contenerizado con infraestructura como código para facilitar su lanzamiento e independencia de ecosistemas heredados como XAMPP.
 
 **Prerrequisitos**
-
-- XAMPP con PHP 8.2+ y MySQL / MariaDB
+- Docker & Docker Compose
 - Git
 
-**Instalación**
-
-1. Clona el repositorio y ubícalo dentro de `htdocs`:
-
+**Instrucciones**
+1. Clona el repositorio:
 ```bash
-git clone https://github.com/Ochoa-Stack/SalitreApp.git
-# Mover la carpeta a: C:/xampp/htdocs/salitre/
+git clone https://github.com/Ochoa-Stack/Salitre.git
+cd Salitre
 ```
 
-2. Crea la base de datos:
-   - Inicia Apache y MySQL desde el Panel de Control de XAMPP
-   - Abre `http://localhost/phpmyadmin`
-   - Crea la base de datos `salitre_db` con collation `utf8mb4_unicode_ci`
-   - Importa `database/setup.sql` - incluye el schema completo, datos de prueba y todas las migraciones integradas
-
-3. Verifica `config/database.php` - los valores por defecto funcionan en instalaciones estándar de XAMPP:
-
-```php
-$host     = getenv('DB_HOST') ?: 'localhost';
-$dbname   = getenv('DB_NAME') ?: 'salitre_db';
-$username = getenv('DB_USER') ?: 'root';
-$password = getenv('DB_PASS') ?: '';
-```
-
-4. Verifica `config/constants.php`:
-
-```php
-define('BASE_URL', getenv('SALITRE_BASE_URL') ?: 'http://localhost/salitre/');
-```
-
-5. Ajusta permisos del directorio de uploads (Linux / macOS únicamente):
-
+2. Levanta los servicios y el entorno:
 ```bash
-chmod 755 assets/img/client/espacios/
+docker-compose up -d
 ```
+*MariaDB se inicializará y autoejecutará las migraciones desde la carpeta `/database`.*
 
-**Acceso**
-
-| Módulo | URL |
+**Acceso a Servicios**
+---
+| Servicio | URL |
 |---|---|
-| Portal cliente | `http://localhost/salitre/` |
-| Panel admin | `http://localhost/salitre/admin/` |
+| Portal Cliente | `http://localhost:8080/` |
+| Panel Admin | `http://localhost:8080/admin/` |
+| PHPMyAdmin | `http://localhost:8081/` |
 
-**Credenciales de prueba**
-
+**Credenciales de Prueba**
+---
 | Rol | Email | Contraseña |
 |---|---|---|
-| Admin | `admin@salitre.mx` | Ver `database/setup.sql` línea 92 |
+| Admin | `admin@salitre.mx` | Ver la tabla en base de datos |
 | Cliente | `cliente@prueba.mx` | `cliente123` |
-
-**Simulación de pago**
-
-| Marca | Número | CVV | Resultado |
-|---|---|---|---|
-| Visa | `4242 4242 4242 4242` | Cualquier 3 dígitos | Aprobado |
-| Mastercard | `5555 5555 5555 4444` | Cualquier 3 dígitos | Aprobado |
-| Amex | `3782 822463 10005` | Cualquier 4 dígitos | Aprobado |
-| Cualquier marca | Número terminado en dígito impar | — | Rechazado |
-
----
-
-## Roadmap
-
-- [ ] Gestión de cuentas de staff desde la UI (actualmente requiere acceso directo a la base de datos)
-- [ ] Búsqueda y filtros en los listados del panel administrativo
-- [ ] Integración con pasarela de pago real (Stripe / MercadoPago — actualmente simulado para entornos de desarrollo local)
-- [ ] Envío de correo en recuperación de contraseña (requiere servidor de correo configurado; en entorno local el enlace se escribe en `error_log()`)
-- [ ] Política de cancelación basada en tiempo (las reglas de ventana de cancelación no están implementadas)
-- [ ] Modificación de reserva por parte del cliente
 
 ---
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for details.
+Distribuido bajo la Licencia MIT. Consulta `LICENSE` para más detalles.
