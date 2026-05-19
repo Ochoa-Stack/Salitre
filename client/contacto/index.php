@@ -6,6 +6,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once dirname(__DIR__, 2) . "/config/database.php";
 require_once dirname(__DIR__, 2) . "/config/constants.php";
+require_once dirname(__DIR__, 2) . "/config/csrf.php";
+$csrf_token = generarTokenCSRF();
 
 $page_title = "Contacto — " . SITE_NAME;
 $extra_stylesheets = ["assets/css/client/index.css"];    // Reutilizamos estilos de contacto de index

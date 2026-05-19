@@ -76,8 +76,8 @@
                     </div>
 
                     <form id="booking-form" action="<?= $base ?>client/carrito/agregar.php" method="POST">
-<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+<?php /* Pasamos el token CSRF generado en el controlador */ ?>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="espacio_id" value="<?= (int)$espacio['id'] ?>">
                         
                         <div class="booking-dates">

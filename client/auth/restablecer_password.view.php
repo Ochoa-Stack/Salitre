@@ -13,8 +13,8 @@
         <?php endif; ?>
 
         <form action="" method="POST" class="auth-form">
-            <?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+            <?php /* Pasamos el token CSRF para asegurar el flujo */ ?>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="token" value="<?= htmlspecialchars($token_val) ?>">
 
             <div class="field">

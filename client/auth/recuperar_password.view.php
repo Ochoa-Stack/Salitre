@@ -19,8 +19,8 @@
         <?php endif; ?>
 
         <form action="" method="POST" class="auth-form">
-            <?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+            <?php /* Insertamos el token CSRF generado en el controlador */ ?>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
 
             <div class="field">
                 <label for="email" class="field__label">Correo Electrónico</label>

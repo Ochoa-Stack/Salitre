@@ -17,8 +17,8 @@
             <!-- Formulario de contacto - 'procesar_contacto.php' en 'client/includes/' -->
             <form class="contact-form" method="post"
                   action="<?= htmlspecialchars($base . 'client/includes/procesar_contacto.php', ENT_QUOTES, 'UTF-8') ?>">
-<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+<?php /* Protegemos el formulario con el token CSRF del controlador */ ?>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
               <div class="field">
                 <label class="field__label" for="contacto-nombre">Nombre</label>
                 <input class="field__input" type="text" id="contacto-nombre" name="nombre"

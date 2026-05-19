@@ -4,6 +4,7 @@ declare(strict_types=1);
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
+require_once dirname(__DIR__) . "/includes/pricing.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: " . BASE_URL . "client/auth/login.php");
@@ -35,35 +36,32 @@ function restaurarCarrito(PDO $pdo, int $clienteId, bool $fetchSlug = false): vo
         $fs = $pendiente["fecha_salida"] ?? "";
         
         if ($esp_id && $fe && $fs) {
-            $sql = $fetchSlug ? "SELECT id, precio_noche, slug FROM espacios WHERE id = ? AND activo = 1" : "SELECT id, precio_noche FROM espacios WHERE id = ? AND activo = 1";
-            $stmtE = $pdo->prepare($sql);
-            $stmtE->execute([$esp_id]);
-            $espCart = $stmtE->fetch(PDO::FETCH_ASSOC);
+            try {
+                $entrada = new DateTime($fe);
+                $salida = new DateTime($fs);
+                $diff = $entrada->diff($salida);
+                $noches = ($diff->invert || $diff->days < 1) ? 0 : $diff->days;
+            } catch (Exception $ex) {
+                $noches = 0;
+            }
             
-            if ($espCart) {
-                try {
-                    $entrada = new DateTime($fe);
-                    $salida = new DateTime($fs);
-                    $diff = $entrada->diff($salida);
-                    $noches = ($diff->invert || $diff->days < 1) ? 0 : $diff->days;
-                } catch (Exception $ex) {
-                    $noches = 0;
-                }
+            if ($noches > 0) {
+                // Obtenemos los precios usando la función centralizada
+                $totales = calcularTotalesCarrito([
+                    "espacio_id" => $esp_id,
+                    "noches" => $noches
+                ], $pdo);
                 
-                if ($noches > 0) {
-                    $subtotal = $espCart["precio_noche"] * $noches;
-                    $iva = $subtotal * IVA;
-                    $total = $subtotal + LIMPIEZA_FEE + $iva;
-                    
+                if (!empty($totales)) {
                     $_SESSION["carrito"] = [
                         "espacio_id" => (int)$esp_id,
                         "fecha_entrada" => $fe,
                         "fecha_salida" => $fs,
                         "noches" => $noches,
-                        "subtotal" => $subtotal,
-                        "iva" => $iva,
-                        "limpieza" => LIMPIEZA_FEE,
-                        "total" => $total
+                        "subtotal" => $totales["subtotal"],
+                        "iva" => $totales["iva"],
+                        "limpieza" => $totales["limpieza"],
+                        "total" => $totales["total"]
                     ];
                 }
             }
@@ -133,9 +131,6 @@ if ($action === "registro") {
     );
     $stmt->execute([$nombre, $email, $password_hash, $telefono]);
     
-    // Invalidamos el token usado para asegurar que la acción solo se ejecute una vez por generación
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
     /* Restauramos el carrito pendiente si existe, vinculándolo al cliente recién autenticado */
     restaurarCarrito($pdo, (int)$_SESSION["cliente_id"], false);
     

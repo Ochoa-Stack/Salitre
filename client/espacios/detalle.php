@@ -3,6 +3,8 @@
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
+require_once dirname(__DIR__) . "/../config/csrf.php";
+$csrf_token = generarTokenCSRF();
 
 // Filtramos el slug manualmente para eliminar cualquier caracter no válido en una URL
 $slug = preg_replace('/[^a-z0-9\-]/', '', strtolower(trim($_GET["slug"] ?? "")));

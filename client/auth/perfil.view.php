@@ -24,8 +24,8 @@
         <section class="perfil-info">
             <h2>Editar Información Personal</h2>
             <form action="" method="POST" class="auth-form">
-                <?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                <?php /* Pasamos el token CSRF para asegurar la actualización del perfil */ ?>
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="action" value="update_profile">
                 
                 <div class="field">
@@ -90,7 +90,7 @@
                                 <td>
                                     <?php if ($reserva["estado"] === "pendiente" || $reserva["estado"] === "confirmada"): ?>
                                         <form action="<?= BASE_URL ?>client/auth/cancelar_reserva.php" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta reserva?')">
-                                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
                                             <input type="hidden" name="reserva_id" value="<?= $reserva["id"] ?>">
                                             <button type="submit" class="btn btn-outline btn-sm btn-danger-outline">
                                                 Cancelar

@@ -4,6 +4,7 @@ declare(strict_types=1);
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
+require_once dirname(__DIR__) . "/../client/includes/pricing.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: " . BASE_URL . "client/espacios/index.php");
@@ -63,21 +64,27 @@ if (!$espacio) {
     exit;
 }
 
-// Calculamos el total basándose en los datos 100% de backend
-$subtotal = $espacio["precio_noche"] * $noches;
-$iva = $subtotal * IVA;
-$total = $subtotal + LIMPIEZA_FEE + $iva;
+// Obtenemos los totales desde nuestro helper
+$totales = calcularTotalesCarrito([
+    "espacio_id" => $espacio_id,
+    "noches"     => $noches
+], $pdo);
+
+if (empty($totales)) {
+    header("Location: " . BASE_URL . "client/index.php");
+    exit;
+}
 
 // Guardamos en la variable 'SESSION'
 $_SESSION["carrito"] = [
-    "espacio_id" => (int)$espacio_id,
+    "espacio_id"    => (int)$espacio_id,
     "fecha_entrada" => $fecha_entrada,
-    "fecha_salida" => $fecha_salida,
-    "noches" => $noches,
-    "subtotal" => $subtotal,
-    "iva" => $iva,
-    "limpieza" => LIMPIEZA_FEE,
-    "total" => $total
+    "fecha_salida"  => $fecha_salida,
+    "noches"        => $noches,
+    "subtotal"      => $totales["subtotal"],
+    "iva"           => $totales["iva"],
+    "limpieza"      => $totales["limpieza"],
+    "total"         => $totales["total"]
 ];
 
 header("Location: " . BASE_URL . "client/carrito/index.php");

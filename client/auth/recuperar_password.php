@@ -5,6 +5,8 @@ declare(strict_types=1);
 session_start();
 require_once "../../config/database.php";
 require_once "../../config/constants.php";
+require_once dirname(__DIR__) . "/../config/csrf.php";
+$csrf_token = generarTokenCSRF();
 
 $message = "";
 $error = "";

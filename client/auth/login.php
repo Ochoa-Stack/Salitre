@@ -4,6 +4,8 @@ declare(strict_types=1);
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
 require_once dirname(__DIR__) . "/../config/constants.php";
+require_once dirname(__DIR__) . "/../config/csrf.php";
+$csrf_token = generarTokenCSRF();
 
 // Si ya hay sesión, redirige según el parámetro 'redirect' o a la página principal
 if (isset($_SESSION["cliente_id"])) {

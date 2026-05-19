@@ -25,8 +25,8 @@
         <?php endif; ?>
 
         <form action="<?= $base ?>client/auth/procesar_auth.php" method="POST" class="auth-form" onsubmit="return validatePasswords()">
-<?php if(empty($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); ?>
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+<?php /* Protegemos el registro pasándole el token CSRF */ ?>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="action" value="registro">
 
             <div class="field">
