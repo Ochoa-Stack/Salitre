@@ -1,0 +1,32 @@
+name: Continuous Integration
+
+# Configuramos los disparadores para nuestras ramas principales
+on:
+  push:
+    branches: [ "master", "develop" ]
+  pull_request:
+    branches: [ "master", "develop" ]
+
+jobs:
+  audit:
+    name: Audit & QA
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargamos el código fuente
+        uses: actions/checkout@v3
+
+      - name: Preparamos el entorno PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          # Activamos las extensiones críticas para conectar la lógica
+          extensions: pdo_mysql
+
+      - name: Instalamos las dependencias de control de calidad
+        run: composer install --prefer-dist --no-progress
+
+      - name: Ejecutamos el análisis estático y formateo estricto
+        # Si PHPStan detecta errores, bloquearemos el merge automáticamente
+        run: composer run check
