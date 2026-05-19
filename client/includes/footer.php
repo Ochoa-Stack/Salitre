@@ -19,10 +19,10 @@
             <div class="footer-col">
                 <h3>Explorar</h3>
                 <ul>
-                    <li><a href="<?= BASE_URL ?>client/espacios/index.php">Espacios</a></li>
-                    <li><a href="<?= BASE_URL ?>client/servicios/index.php">Servicios</a></li>
-                    <li><a href="<?= BASE_URL ?>client/agenda/index.php">Agenda</a></li>
-                    <li><a href="<?= BASE_URL ?>client/proyecto/index.php">Proyecto</a></li>
+                    <li><a href="/client/espacios/index.php">Espacios</a></li>
+                    <li><a href="/client/servicios/index.php">Servicios</a></li>
+                    <li><a href="/client/agenda/index.php">Agenda</a></li>
+                    <li><a href="/client/proyecto/index.php">Proyecto</a></li>
                 </ul>
             </div>
             
@@ -30,11 +30,11 @@
             <div class="footer-col">
                 <h3>Información</h3>
                 <ul>
-                    <li><a href="<?= BASE_URL ?>client/proyecto/index.php#intro">Proyecto</a></li>
-                    <li><a href="<?= BASE_URL ?>client/proyecto/index.php#conocenos">Conócenos</a></li>
-                    <li><a href="<?= BASE_URL ?>client/proyecto/index.php#ubicacion">Ubicación</a></li>
-                    <li><a href="<?= BASE_URL ?>client/contacto/index.php">Contacto</a></li>
-                    <li><a href="<?= BASE_URL ?>admin/login.php">Portal Staff</a></li>
+                    <li><a href="/client/proyecto/index.php#intro">Proyecto</a></li>
+                    <li><a href="/client/proyecto/index.php#conocenos">Conócenos</a></li>
+                    <li><a href="/client/proyecto/index.php#ubicacion">Ubicación</a></li>
+                    <li><a href="/client/contacto/index.php">Contacto</a></li>
+                    <li><a href="/admin/login.php">Portal Staff</a></li>
                 </ul>
             </div>
             

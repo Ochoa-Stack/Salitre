@@ -5,7 +5,7 @@ $base = BASE_URL;
 ?>
 <nav class="nav-main" role="navigation" aria-label="Navegación principal">
     <!-- Logo -->
-    <a href="<?= BASE_URL ?>client/index.php" class="nav-logo">
+    <a href="/client/index.php" class="nav-logo">
         <img src="/assets/img/logo/logo.svg"
              alt="Salitre"
              width="120"
@@ -14,23 +14,23 @@ $base = BASE_URL;
     
     <!-- Definimos el menú de navegación -->
     <ul class="nav-menu" id="nav-menu">
-        <li><a href="<?= BASE_URL ?>client/index.php" class="nav-link">Inicio</a></li>
-        <li><a href="<?= BASE_URL ?>client/espacios/index.php" class="nav-link">Espacios</a></li>
-        <li><a href="<?= BASE_URL ?>client/servicios/index.php" class="nav-link">Servicios</a></li>
-        <li><a href="<?= BASE_URL ?>client/agenda/index.php" class="nav-link">Agenda</a></li>
-        <li><a href="<?= BASE_URL ?>client/contacto/index.php" class="nav-link">Contacto</a></li>
-        <li><a href="<?= BASE_URL ?>client/proyecto/index.php" class="nav-link">Proyecto</a></li>
-        <li><a href="<?= BASE_URL ?>client/ayuda/index.php" class="nav-link">Ayuda</a></li>
+        <li><a href="/client/index.php" class="nav-link">Inicio</a></li>
+        <li><a href="/client/espacios/index.php" class="nav-link">Espacios</a></li>
+        <li><a href="/client/servicios/index.php" class="nav-link">Servicios</a></li>
+        <li><a href="/client/agenda/index.php" class="nav-link">Agenda</a></li>
+        <li><a href="/client/contacto/index.php" class="nav-link">Contacto</a></li>
+        <li><a href="/client/proyecto/index.php" class="nav-link">Proyecto</a></li>
+        <li><a href="/client/ayuda/index.php" class="nav-link">Ayuda</a></li>
     </ul>
     
     <!-- Definimos los botones de 'acción' y el 'hamburger' -->
     <div class="nav-actions">
         <?php if(isset($_SESSION["cliente_id"])): ?>
-            <a href="<?= BASE_URL ?>client/auth/perfil.php" class="btn btn-outline">Mi Perfil</a>
-            <a href="<?= BASE_URL ?>client/auth/logout.php" class="btn btn-outline">Salir</a>
+            <a href="/client/auth/perfil.php" class="btn btn-outline">Mi Perfil</a>
+            <a href="/client/auth/logout.php" class="btn btn-outline">Salir</a>
         <?php else: ?>
-            <a href="<?= BASE_URL ?>client/auth/login.php" class="btn btn-outline">Iniciar</a>
-            <a href="<?= BASE_URL ?>client/espacios/index.php" class="btn btn-primary">Reservar</a>
+            <a href="/client/auth/login.php" class="btn btn-outline">Iniciar</a>
+            <a href="/client/espacios/index.php" class="btn btn-primary">Reservar</a>
         <?php endif; ?>
         
         <!-- Definimos el botón 'hamburger' - siempre visibles -->
@@ -50,23 +50,23 @@ $base = BASE_URL;
 <div class="nav-dropdown" id="nav-dropdown" aria-hidden="true">
     <div class="dropdown-container">
         <ul class="dropdown-menu">
-            <li><a href="<?= BASE_URL ?>client/index.php">Inicio</a></li>
-            <li><a href="<?= BASE_URL ?>client/espacios/index.php">Espacios</a></li>
-            <li><a href="<?= BASE_URL ?>client/servicios/index.php">Servicios</a></li>
-            <li><a href="<?= BASE_URL ?>client/agenda/index.php">Agenda</a></li>
-            <li><a href="<?= BASE_URL ?>client/contacto/index.php">Contacto</a></li>
-            <li><a href="<?= BASE_URL ?>client/proyecto/index.php">Proyecto</a></li>
-            <li><a href="<?= BASE_URL ?>client/ayuda/index.php">Ayuda</a></li>
+            <li><a href="/client/index.php">Inicio</a></li>
+            <li><a href="/client/espacios/index.php">Espacios</a></li>
+            <li><a href="/client/servicios/index.php">Servicios</a></li>
+            <li><a href="/client/agenda/index.php">Agenda</a></li>
+            <li><a href="/client/contacto/index.php">Contacto</a></li>
+            <li><a href="/client/proyecto/index.php">Proyecto</a></li>
+            <li><a href="/client/ayuda/index.php">Ayuda</a></li>
             <li class="dropdown-auth">
                 <?php if(isset($_SESSION["cliente_id"])): ?>
-                    <a href="<?= BASE_URL ?>client/auth/perfil.php">Mi Cuenta</a>
-                    <a href="<?= BASE_URL ?>client/auth/logout.php">Cerrar Sesión</a>
+                    <a href="/client/auth/perfil.php">Mi Cuenta</a>
+                    <a href="/client/auth/logout.php">Cerrar Sesión</a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>client/auth/login.php">Iniciar Sesión</a>
-                    <a href="<?= BASE_URL ?>client/auth/registro.php">Registrarse</a>
+                    <a href="/client/auth/login.php">Iniciar Sesión</a>
+                    <a href="/client/auth/registro.php">Registrarse</a>
                 <?php endif; ?>
             </li>
-            <li><a href="<?= BASE_URL ?>client/espacios/index.php" class="dropdown-cta">Reservar</a></li>
+            <li><a href="/client/espacios/index.php" class="dropdown-cta">Reservar</a></li>
         </ul>
     </div>
 </div>

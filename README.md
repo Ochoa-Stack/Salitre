@@ -4,7 +4,7 @@ Plataforma integral de reservas para hoteles boutique: portal de clientes y pane
 
 ![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-informational) ![MariaDB 10.6](https://img.shields.io/badge/MariaDB-10.6-informational) ![License: MIT](https://img.shields.io/badge/License-MIT-informational) ![PHPStan](https://img.shields.io/badge/PHPStan-Level%206-brightgreen) ![PHPUnit](https://img.shields.io/badge/PHPUnit-100%25-brightgreen)
 
-> **Deploy:*`https://salitre-salitre-prod.up.railway.app/* ``
+> **Deploy:*`https://salitre-salitre-prod.up.railway.app/* `
 > Credenciales de prueba disponibles en [Local Development](#despliegue-local-docker).
 
 ---
