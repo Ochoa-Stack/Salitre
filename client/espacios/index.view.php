@@ -34,7 +34,7 @@
                         <div class="space-card__media">
 
                             <?php if (!empty($espacio['foto_principal'])) : 
-                                $foto_path = strpos($espacio['foto_principal'], 'assets/') === 0 ? $espacio['foto_principal'] : 'assets/img/client/espacios/' . $espacio['foto_principal'];
+                                $foto_path = strpos($espacio['foto_principal'], '/assets/') === 0 ? $espacio['foto_principal'] : '/assets/img/client/espacios/' . $espacio['foto_principal'];
                             ?>
                                 <picture>
                                     <source srcset="<?= htmlspecialchars($base . $foto_path, ENT_QUOTES, 'UTF-8') ?>" type="image/webp">

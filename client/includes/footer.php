@@ -5,7 +5,7 @@
         <!-- Definimos la franja superior (logo y tagline) -->
         <div class="footer-top">
             <div class="footer-logo">
-                <img src="<?= BASE_URL ?>assets/img/logo/logo-white.png"
+                <img src="/assets/img/logo/logo-white.png"
                      alt="Salitre"
                      width="120"
                      height="40">
@@ -63,13 +63,14 @@
     </div>
 </footer>
 
-<script src="<?= $base ?>assets/js/shared/animations.js" defer></script>
-<script src="<?= $base ?>assets/js/shared/alerts.js" defer></script>
-<script src="<?= $base ?>assets/js/client/main.js" defer></script>
+<script src="/assets/js/shared/animations.js" defer></script>
+<script src="/assets/js/shared/alerts.js" defer></script>
+<script src="/assets/js/client/main.js" defer></script>
 
 <?php if (isset($extra_scripts) && is_array($extra_scripts)): ?>
     <?php foreach ($extra_scripts as $script): ?>
-        <script src="<?= htmlspecialchars($base . $script, ENT_QUOTES, 'UTF-8') ?>" defer></script>
+        <?php $script_path = str_starts_with($script, '/') ? $script : '/' . $script; ?>
+        <script src="<?= htmlspecialchars($script_path, ENT_QUOTES, 'UTF-8') ?>" defer></script>
     <?php endforeach; ?>
 <?php endif; ?>
 

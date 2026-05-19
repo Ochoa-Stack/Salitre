@@ -1,8 +1,8 @@
 <!-- Definimos las secciones hero de video, recursos adicionales y otras secciones -->
 <section id="hero" class="hero">
   <video class="hero__video" autoplay muted loop playsinline>
-    <source src="<?= $base ?>assets/video/hero-bg.mp4" type="video/mp4">
-    <source src="<?= $base ?>assets/video/hero-bg.webm" type="video/webm">
+    <source src="/assets/video/hero-bg.mp4" type="video/mp4">
+    <source src="/assets/video/hero-bg.webm" type="video/webm">
   </video>
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="hero__content">

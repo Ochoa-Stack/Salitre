@@ -15,6 +15,15 @@ RUN echo 'server { \
     server_name _; \
     root /var/www/html; \
     index index.php index.html; \
+    location ~ ^/(config|admin/includes|client/includes)/ { \
+        deny all; \
+        return 404; \
+    } \
+    \
+    location ~ \.(sql|env|git|log|bak|tmp)$ { \
+        deny all; \
+        return 404; \
+    } \
     \
     location / { \
         try_files $uri $uri/ /index.php?$query_string; \

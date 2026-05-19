@@ -29,7 +29,7 @@ $nav_items = [
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
-    <img src="<?= $base ?>assets/img/logo/logo-white.png"
+    <img src="/assets/img/logo/logo-white.png"
          alt="Salitre Admin"
          class="sidebar__brand-logo"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex'">

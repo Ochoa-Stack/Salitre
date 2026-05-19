@@ -6,7 +6,7 @@ $base = BASE_URL;
 <nav class="nav-main" role="navigation" aria-label="Navegación principal">
     <!-- Logo -->
     <a href="<?= BASE_URL ?>client/index.php" class="nav-logo">
-        <img src="<?= BASE_URL ?>assets/img/logo/logo.svg"
+        <img src="/assets/img/logo/logo.svg"
              alt="Salitre"
              width="120"
              height="40">

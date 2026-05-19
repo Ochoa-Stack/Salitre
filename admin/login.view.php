@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acceso - Panel Salitre</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="<?php echo BASE_URL; ?>assets/img/logo/favicon.png">
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/admin/auth.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon.png">
+  <link rel="stylesheet" href="/assets/css/admin/auth.css">
 </head>
 <body class="auth-body">
 

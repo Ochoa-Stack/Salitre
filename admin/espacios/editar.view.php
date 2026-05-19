@@ -85,7 +85,7 @@
             <label class="form-label" for="foto_principal">Foto Principal (JPG/PNG/WEBP) - Dejar en blanco para conservar actual</label>
             <input class="form-input" type="file" id="foto_principal" name="foto_principal" accept=".jpg,.jpeg,.png,.webp">
             <?php if (!empty($espacio['foto_principal'])) : ?>
-              <p style="margin-top: 0.5rem; font-size: 0.875rem;">Actual: <a href="<?php echo BASE_URL . 'assets/img/client/espacios/' . htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" style="color: var(--color-accent); text-decoration: underline;"><?php echo htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?></a></p>
+              <p style="margin-top: 0.5rem; font-size: 0.875rem;">Actual: <a href="<?php echo '/assets/img/client/espacios/' . htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" style="color: var(--color-accent); text-decoration: underline;"><?php echo htmlspecialchars($espacio['foto_principal'], ENT_QUOTES, 'UTF-8'); ?></a></p>
             <?php endif; ?>
           </div>
 

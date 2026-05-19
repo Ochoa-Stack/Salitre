@@ -59,15 +59,15 @@
 
                     <div class="metodo-selector">
                         <div class="metodo-option active" data-metodo="tarjeta">
-                            <img src="<?= BASE_URL ?>assets/img/payments/visa.svg" alt="Tarjeta">
+                            <img src="/assets/img/payments/visa.svg" alt="Tarjeta">
                             <span>Tarjeta</span>
                         </div>
                         <div class="metodo-option" data-metodo="oxxo">
-                            <img src="<?= BASE_URL ?>assets/img/payments/oxxo.svg" alt="OXXO">
+                            <img src="/assets/img/payments/oxxo.svg" alt="OXXO">
                             <span>OXXO</span>
                         </div>
                         <div class="metodo-option" data-metodo="paypal">
-                            <img src="<?= BASE_URL ?>assets/img/payments/paypal.svg" alt="PayPal">
+                            <img src="/assets/img/payments/paypal.svg" alt="PayPal">
                             <span>PayPal</span>
                         </div>
                     </div>
@@ -78,9 +78,9 @@
 
                     <div id="card-fields" class="card-fields active">
                         <div class="card-brand-display">
-                            <img src="<?= BASE_URL ?>assets/img/payments/visa.svg" id="brand-visa" alt="Visa">
-                            <img src="<?= BASE_URL ?>assets/img/payments/mastercard.svg" id="brand-mastercard" alt="Mastercard">
-                            <img src="<?= BASE_URL ?>assets/img/payments/amex.svg" id="brand-amex" alt="Amex">
+                            <img src="/assets/img/payments/visa.svg" id="brand-visa" alt="Visa">
+                            <img src="/assets/img/payments/mastercard.svg" id="brand-mastercard" alt="Mastercard">
+                            <img src="/assets/img/payments/amex.svg" id="brand-amex" alt="Amex">
                         </div>
 
                         <div class="field">

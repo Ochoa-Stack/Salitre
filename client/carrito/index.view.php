@@ -14,7 +14,7 @@
             <div class="carrito-info fade-in" data-delay="100">
                 <div class="carrito-foto">
                     <?php if (!empty($espacio['foto_principal'])) : 
-                        $foto_path = strpos($espacio['foto_principal'], 'assets/') === 0 ? $espacio['foto_principal'] : 'assets/img/client/espacios/' . $espacio['foto_principal'];
+                        $foto_path = strpos($espacio['foto_principal'], '/assets/') === 0 ? $espacio['foto_principal'] : '/assets/img/client/espacios/' . $espacio['foto_principal'];
                     ?>
                         <picture>
                             <source srcset="<?= htmlspecialchars($base . str_replace('.jpg', '.webp', $foto_path), ENT_QUOTES, 'UTF-8') ?>" type="image/webp">
@@ -71,11 +71,11 @@
                 <div class="carrito-seguridad mt-6" style="text-align: center; border-top: 1px solid var(--color-border); padding-top: 1.5rem;">
                     <p style="font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 0.8rem; font-weight: 500;">Transacción Segura y Encriptada</p>
                     <div style="display: flex; gap: 0.85rem; justify-content: center; align-items: center; flex-wrap: wrap; opacity: 0.8;">
-                        <img src="<?= $base ?>assets/img/payments/visa.svg" alt="Visa" style="height: 20px;">
-                        <img src="<?= $base ?>assets/img/payments/mastercard.svg" alt="Mastercard" style="height: 20px;">
-                        <img src="<?= $base ?>assets/img/payments/amex.svg" alt="American Express" style="height: 20px;">
-                        <img src="<?= $base ?>assets/img/payments/paypal.svg" alt="PayPal" style="height: 20px;">
-                        <img src="<?= $base ?>assets/img/payments/oxxo.svg" alt="OXXO" style="height: 20px;">
+                        <img src="/assets/img/payments/visa.svg" alt="Visa" style="height: 20px;">
+                        <img src="/assets/img/payments/mastercard.svg" alt="Mastercard" style="height: 20px;">
+                        <img src="/assets/img/payments/amex.svg" alt="American Express" style="height: 20px;">
+                        <img src="/assets/img/payments/paypal.svg" alt="PayPal" style="height: 20px;">
+                        <img src="/assets/img/payments/oxxo.svg" alt="OXXO" style="height: 20px;">
                     </div>
                 </div>
             </div>

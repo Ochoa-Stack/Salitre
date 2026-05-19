@@ -12,7 +12,7 @@ $base         = BASE_URL;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
-  <link rel="icon" type="image/png" sizes="32x32" href="<?= $base ?>assets/img/logo/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo/favicon.png">
 
   <!-- Importamos Inter desde Google Fonts para consistencia tipográfica entre módulos -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,15 +20,14 @@ $base         = BASE_URL;
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- Mandamos a llamar a las hojas de estilo unicas y globales -->
-  <link rel="stylesheet" href="<?= $base ?>assets/css/shared/variables.css">
-  <!-- Mandamos a llamar al reset cross-browser -->
-  <link rel="stylesheet" href="<?= $base ?>assets/css/shared/reset.css">
-  <!-- Mandamos a llamar al estilo del admin (dashboard.css via main.css) -->
-  <link rel="stylesheet" href="<?= $base ?>assets/css/admin/main.css">
+  <link rel="stylesheet" href="/assets/css/shared/variables.css">
+  <link rel="stylesheet" href="/assets/css/shared/reset.css">
+  <link rel="stylesheet" href="/assets/css/admin/main.css">
 
   <?php if (!empty($extra_css) && is_array($extra_css)) : ?>
     <?php foreach ($extra_css as $css) : ?>
-      <link rel="stylesheet" href="<?= $base . htmlspecialchars(ltrim((string) $css, '/'), ENT_QUOTES, 'UTF-8') ?>">
+      <?php $style_path = str_starts_with($css, '/') ? $css : '/' . $css; ?>
+      <link rel="stylesheet" href="<?= htmlspecialchars($style_path, ENT_QUOTES, 'UTF-8'); ?>">
     <?php endforeach; ?>
   <?php endif; ?>
 </head>
