@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/carrito/confirmacion.php' muestra la página de confirmación y derivados de reserva después de que el cliente ha completado el proceso de reserva */
 
 session_start();

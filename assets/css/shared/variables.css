@@ -2,83 +2,119 @@
 :root {
 
   /* Definimos los estilos de los colores base */
-  --color-bg:           #F8F8F5;   /* 60% — Fondos principales */
-  --color-text:         #2c3539;   /* 30% — Texto base         */
-  --color-accent:       #6C8062;   /* 10% — Botones, acento    */
+  --color-bg: #F8F8F5;
+  /* 60% — Fondos principales */
+  --color-text: #2c3539;
+  /* 30% — Texto base         */
+  --color-accent: #6C8062;
+  /* 10% — Botones, acento    */
 
   /* Definimos las variaciones de los acentos */
-  --color-accent-dark:  #4A5C42;   /* Hover de botones         */
-  --color-accent-light: #8FA886;   /* Acento suave / badges    */
+  --color-accent-dark: #4A5C42;
+  /* Hover de botones         */
+  --color-accent-light: #8FA886;
+  /* Acento suave / badges    */
 
   /* Definimos los estilos de las superficies */
-  --color-surface:      #FFFFFF;   /* Cards, formularios       */
-  --color-mid:          #E4E9E4;   /* Fondos alternativos      */
-  --color-border:       #D0D8D0;   /* Bordes de inputs         */
+  --color-surface: #FFFFFF;
+  /* Cards, formularios       */
+  --color-mid: #E4E9E4;
+  /* Fondos alternativos      */
+  --color-border: #D0D8D0;
+  /* Bordes de inputs         */
 
   /* Definimos los estilos para el texto secundario */
-  --color-text-muted:   #6B7280;   /* Texto secundario / sutil */
-  --color-text-light:   #9CA3AF;   /* Placeholders, hints      */
+  --color-text-muted: #6B7280;
+  /* Texto secundario / sutil */
+  --color-text-light: #9CA3AF;
+  /* Placeholders, hints      */
 
   /* Definimos los estilos para los estados (estados de acción) */
-  --color-success:      #4A7C59;
-  --color-error:        #C0392B;
-  --color-danger:       #C0392B;
-  --color-warning:      #D97706;
-  --color-info:         #2563EB;
-  
+  --color-success: #4A7C59;
+  --color-error: #C0392B;
+  --color-danger: #C0392B;
+  --color-warning: #D97706;
+  --color-info: #2563EB;
+
 
   /* Definimos las fuentes - tipografia */
-  --font-display:       "Playfair Display", Georgia, serif;
-  --font-body:          "Inter", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
 
   /* Definimos la escala tipográfica */
-  --text-xs:    0.75rem;    /*  12px */
-  --text-sm:    0.875rem;   /*  14px */
-  --text-base:  1rem;       /*  16px */
-  --text-lg:    1.125rem;   /*  18px */
-  --text-xl:    1.25rem;    /*  20px */
-  --text-2xl:   1.5rem;     /*  24px */
-  --text-3xl:   1.875rem;   /*  30px */
-  --text-4xl:   2.25rem;    /*  36px */
-  --text-5xl:   3rem;       /*  48px */
+  --text-xs: 0.75rem;
+  /*  12px */
+  --text-sm: 0.875rem;
+  /*  14px */
+  --text-base: 1rem;
+  /*  16px */
+  --text-lg: 1.125rem;
+  /*  18px */
+  --text-xl: 1.25rem;
+  /*  20px */
+  --text-2xl: 1.5rem;
+  /*  24px */
+  --text-3xl: 1.875rem;
+  /*  30px */
+  --text-4xl: 2.25rem;
+  /*  36px */
+  --text-5xl: 3rem;
+  /*  48px */
 
   /* Definimos los estilos para el espaciado (escalas) */
-  --space-1:    0.25rem;    /*  4px  */
-  --space-2:    0.5rem;     /*  8px  */
-  --space-3:    0.75rem;    /*  12px */
-  --space-4:    1rem;       /*  16px */
-  --space-5:    1.25rem;    /*  20px */
-  --space-6:    1.5rem;     /*  24px */
-  --space-8:    2rem;       /*  32px */
-  --space-10:   2.5rem;     /*  40px */
-  --space-12:   3rem;       /*  48px */
-  --space-16:   4rem;       /*  64px */
-  --space-20:   5rem;       /*  80px */
-  --space-24:   6rem;       /*  96px */
+  --space-1: 0.25rem;
+  /*  4px  */
+  --space-2: 0.5rem;
+  /*  8px  */
+  --space-3: 0.75rem;
+  /*  12px */
+  --space-4: 1rem;
+  /*  16px */
+  --space-5: 1.25rem;
+  /*  20px */
+  --space-6: 1.5rem;
+  /*  24px */
+  --space-8: 2rem;
+  /*  32px */
+  --space-10: 2.5rem;
+  /*  40px */
+  --space-12: 3rem;
+  /*  48px */
+  --space-16: 4rem;
+  /*  64px */
+  --space-20: 5rem;
+  /*  80px */
+  --space-24: 6rem;
+  /*  96px */
 
   /* Definimos los estilos para los bordes */
-  --radius-sm:  0.25rem;    /*  4px  */
-  --radius-md:  0.5rem;     /*  8px  */
-  --radius-lg:  1rem;       /*  16px */
-  --radius-xl:  1.5rem;     /*  24px */
-  --radius-full: 9999px;    /*  Píldoras / avatares */
+  --radius-sm: 0.25rem;
+  /*  4px  */
+  --radius-md: 0.5rem;
+  /*  8px  */
+  --radius-lg: 1rem;
+  /*  16px */
+  --radius-xl: 1.5rem;
+  /*  24px */
+  --radius-full: 9999px;
+  /*  Píldoras / avatares */
 
-   /* Definimos los estilos para las sombras (efectos sombra) */
-  --shadow-sm:  0 1px 3px rgba(44, 53, 57, 0.08),
-                0 1px 2px rgba(44, 53, 57, 0.04);
+  /* Definimos los estilos para las sombras (efectos sombra) */
+  --shadow-sm: 0 1px 3px rgba(44, 53, 57, 0.08),
+    0 1px 2px rgba(44, 53, 57, 0.04);
 
-  --shadow-md:  0 4px 6px  rgba(44, 53, 57, 0.07),
-                0 2px 4px  rgba(44, 53, 57, 0.05);
+  --shadow-md: 0 4px 6px rgba(44, 53, 57, 0.07),
+    0 2px 4px rgba(44, 53, 57, 0.05);
 
-  --shadow-lg:  0 10px 20px rgba(44, 53, 57, 0.10),
-                0 4px  8px  rgba(44, 53, 57, 0.06);
+  --shadow-lg: 0 10px 20px rgba(44, 53, 57, 0.10),
+    0 4px 8px rgba(44, 53, 57, 0.06);
 
-  --shadow-xl:  0 20px 40px rgba(44, 53, 57, 0.12),
-                0 8px  16px rgba(44, 53, 57, 0.08);
-                
-   /* Definimos los estilos para las transiciones */
-  --transition:       all 0.2s ease;
-  --transition-slow:  all 0.4s ease;
+  --shadow-xl: 0 20px 40px rgba(44, 53, 57, 0.12),
+    0 8px 16px rgba(44, 53, 57, 0.08);
+
+  /* Definimos los estilos para las transiciones */
+  --transition: all 0.2s ease;
+  --transition-slow: all 0.4s ease;
 
   /* Definimos las medidas fijas de componentes de layout */
   --navbar-height: 72px;

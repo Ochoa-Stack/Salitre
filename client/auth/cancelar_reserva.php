@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/cancelar_reserva.php' procesa la cancelación de una reserva por parte del cliente */
 
 session_start();
-require_once "../../config/database.php";
-require_once "../../config/constants.php";
+require_once dirname(__DIR__) . "/../config/database.php";
+require_once dirname(__DIR__) . "/../config/constants.php";
 
 /* Validar sesión activa */
 if (!isset($_SESSION["cliente_id"])) {

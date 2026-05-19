@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        Los datos se guardan sin transformar para mantener la integridad en la base de datos. */
 
     $nombre = trim($_POST['nombre']  ?? '');
-    $email  = filter_var(trim($_POST['email']   ?? ''), FILTER_SANITIZE_EMAIL);
+    $email  = trim($_POST['email']   ?? '');
     $mensaje = trim($_POST['mensaje'] ?? '');
 
     if (empty($nombre) || empty($email) || empty($mensaje)) {
@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ' . BASE_URL . 'client/contacto/index.php?contacto=error');
         exit;
     }
-    // Los datos se guardan sin transformar — la sanitización de salida
-    // (htmlspecialchars) se aplica exclusivamente en las vistas al mostrarlos.
+    // Los datos se guardan sin transformar, la sanitización de salida
+    // (htmlspecialchars) se aplica exclusivamente en las vistas al mostrarlos
 
     try {
         $pdo  = conectarDB();

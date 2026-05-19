@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/perfil.php' es la página de perfil del cliente, muestra toda su información */
 
 session_start();

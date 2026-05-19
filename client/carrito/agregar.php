@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/carrito/agregar.php' maneja la lógica de agregar un espacio al carrito, se asegura de validar los datos, calcular el total correctamente y manejar la sesión del cliente. */
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";

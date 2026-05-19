@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/registro.php' es la página de registro de nuevos clientes */
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";

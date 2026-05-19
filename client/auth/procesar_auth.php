@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/procesar_auth.php' procesa tanto el registro como el login de clientes */
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
@@ -73,9 +74,9 @@ function restaurarCarrito(PDO $pdo, int $clienteId, bool $fetchSlug = false): vo
 
 /* Procesamos el registro o login */
 if ($action === "registro") {
-    // Sanitizamos los inputs
+    // Recibimos los datos sin mutarlos, solo quitamos los espacios en blanco
     $nombre = trim($_POST["nombre"] ?? "");
-    $email = filter_var(trim($_POST["email"] ?? ""), FILTER_SANITIZE_EMAIL);
+    $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirmar_password"] ?? "";
     $telefono = isset($_POST["telefono"]) ? trim($_POST["telefono"]) : "";
@@ -97,7 +98,7 @@ if ($action === "registro") {
         exit;
     }
     
-    // Validamos el formato del email
+    // Revisamos que el correo tenga un formato válido
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header("Location: " . BASE_URL . "client/auth/registro.php?error=invalid_email");
         exit;
@@ -150,11 +151,18 @@ if ($action === "registro") {
 
 /* Procesamos el login */
 if ($action === "login") {
-    $email = filter_var(trim($_POST["email"] ?? ""), FILTER_SANITIZE_EMAIL);
+    // Extraemos el correo sin alterarlo
+    $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
     
-    // Validamos los campos obligatorios
+    // Verificamos que los campos no estén vacíos
     if (empty($email) || empty($password)) {
+        header("Location: " . BASE_URL . "client/auth/login.php?error=1");
+        exit;
+    }
+    
+    // Revisamos que el formato del correo sea válido antes de continuar
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header("Location: " . BASE_URL . "client/auth/login.php?error=1");
         exit;
     }

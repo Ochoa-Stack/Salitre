@@ -1,12 +1,12 @@
 <?php
+declare(strict_types=1);
 /* Definimos las rutas absolutas y URLs bases de direccionamiento */
 
-/*
- * Usamos getenv() para permitir override mediante variables de entorno del servidor.
- * Si no existe la variable de entorno, caemos al valor por defecto para XAMPP local.
- * En producción: SetEnv SALITRE_BASE_URL https://tusitio.com/ en el .htaccess o VirtualHost.
- */
-define('BASE_URL',   getenv('SALITRE_BASE_URL')  ?: 'http://localhost/salitre/');
+/* Usamos getenv() para permitir override mediante variables de entorno del servidor.
+   Si no existe la variable de entorno, caemos al valor por defecto para XAMPP local.
+   En producción: SetEnv SALITRE_BASE_URL https://tusitio.com/ en el .htaccess o VirtualHost */
+   
+define('BASE_URL',   (string) (getenv('SALITRE_BASE_URL') ?: 'http://localhost/salitre/'));
 
 define('BASE_PATH',            dirname(__DIR__) . '/');
 define('CONFIG_PATH',          BASE_PATH . 'config/');

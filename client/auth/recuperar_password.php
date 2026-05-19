@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/recuperar_password.php' permite al cliente solicitar un reset de contraseña */
 
 session_start();

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/login.php' es la página de inicio de sesión para los clientes */
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/logout.php' es la página que maneja el cierre de sesión de los clientes */
 session_start();
 require_once dirname(__DIR__) . "/../config/constants.php";

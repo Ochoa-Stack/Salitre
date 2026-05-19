@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/auth/restablecer_password.php' permite al cliente establecer una nueva contraseña mediante un token */
 
 session_start();

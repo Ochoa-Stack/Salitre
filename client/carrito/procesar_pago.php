@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 /* 'client/carrito/procesar_pago.php' procesa el pago y crea la reserva final */
 
 session_start();
-require_once "../../config/database.php";
-require_once "../../config/constants.php";
+require_once dirname(__DIR__) . "/../config/database.php";
+require_once dirname(__DIR__) . "/../config/constants.php";
 
 // Verificamos sesión activa
 if (!isset($_SESSION["cliente_id"])) {
@@ -61,7 +62,7 @@ try {
     $pdo = conectarDB();
     $pdo->beginTransaction();
 
-    // 1. Insertar la reserva (Lógica migrada de procesar_reserva.php)
+    // Insertamos la reserva
     $stmt = $pdo->prepare(
         "INSERT INTO reservas (cliente_id, espacio_id, fecha_entrada, fecha_salida, noches, precio_total, estado, estado_pago) 
          VALUES (?, ?, ?, ?, ?, ?, 'confirmada', 'pagado')"
@@ -77,7 +78,7 @@ try {
     
     $reserva_id = $pdo->lastInsertId();
 
-    // 2. Insertar el registro del pago
+    // Insertamos el registro del pago
     $stmtPago = $pdo->prepare(
         "INSERT INTO pagos (reserva_id, monto, metodo, estado, ultimos4, marca_tarjeta) 
          VALUES (?, ?, ?, 'aprobado', ?, ?)"

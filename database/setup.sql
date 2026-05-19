@@ -118,12 +118,10 @@ INSERT INTO clientes (nombre, email, password, telefono) VALUES
 
 -- Fin del script de configuración inicial
 
--- ============================================================
--- MIGRACIONES INTEGRADAS
--- (sincronizadas desde database/migrations/)
--- ============================================================
 
--- Migración: Tokens de recuperación de contraseña
+-- Migraciones Integradas
+
+-- Tokens de recuperación de contraseña
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
   id         INT AUTO_INCREMENT PRIMARY KEY,
   cliente_id INT NOT NULL,
@@ -135,7 +133,7 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
   INDEX idx_token (token)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Migración: Pasarela de pago simulada
+-- Pasarela de pago simulada
 ALTER TABLE reservas ADD COLUMN IF NOT EXISTS estado_pago
   ENUM('pendiente','pagado') NOT NULL DEFAULT 'pendiente';
 

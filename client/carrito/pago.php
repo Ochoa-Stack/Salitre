@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/carrito/pago.php' controlador para la pasarela de pago simulada */
 
 session_start();

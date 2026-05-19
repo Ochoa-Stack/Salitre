@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /* 'client/carrito/index.php' muestra el resumen de la reserva antes de que el cliente confirme su solicitud. */
 session_start();
 require_once dirname(__DIR__) . "/../config/database.php";
