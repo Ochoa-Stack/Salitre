@@ -1,7 +1,12 @@
 <?php
 /* Definimos las variables para la página principal de Salitre */
 declare(strict_types=1);
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+if (session_status() === PHP_SESSION_NONE) { 
+    session_start(); 
+}
+
+// Cargamos configuración y DB
 require_once dirname(__DIR__) . '/config/constants.php';
 require_once dirname(__DIR__) . '/config/database.php';
 
@@ -21,9 +26,9 @@ try {
     error_log('Index espacios: ' . $e->getMessage());
 }
 
-$page_title        = 'Salitre';
-$extra_stylesheets = ['assets/css/client/index.css'];
+$page_title = 'Salitre';
 
+$extra_stylesheets = ['/assets/css/client/index.css'];
 
 require __DIR__ . '/includes/header.php';
 require __DIR__ . '/includes/nav.php';
