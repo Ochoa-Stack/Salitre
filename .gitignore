@@ -1,1 +1,18 @@
+# Entorno y dependencias
+/vendor/
+.env
+.env.local
+
+# IDEs y Editores
+.vscode/
+.idea/
 .history/
+
+# Sistema Operativo
+Thumbs.db
+.DS_Store
+
+# Caché, Logs y Cobertura
+/logs/
+/cache/
+/docs/coverage/

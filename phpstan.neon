@@ -1,0 +1,14 @@
+parameters:
+    phpVersion: 80200
+    level: 6
+    paths:
+        - admin/
+        - client/
+        - config/
+    excludePaths:
+        - '*/vendor/*'
+        - '*.view.php'
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: false

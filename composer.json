@@ -1,0 +1,36 @@
+{
+    "name": "salitre/hotel-app",
+    "description": "SalitreApp \u2014 Hotel Boutique. Dev-Tooling only.",
+    "type": "project",
+    "license": "MIT",
+    "require": {},
+    "require-dev": {
+        "phpstan/phpstan": "^1.12",
+        "squizlabs/php_codesniffer": "^3.10",
+        "phpunit/phpunit": "^11.0",
+        "phpstan/extension-installer": "^1.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SalitreTests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --memory-limit=256M",
+        "lint": "phpcs --standard=PSR12 --extensions=php admin/ client/ config/ --ignore=*.view.php",
+        "lint-fix": "phpcbf --standard=PSR12 --extensions=php admin/ client/ config/ --ignore=*.view.php",
+        "test": "phpunit --testdox",
+        "check": [
+            "@analyse",
+            "@lint",
+            "@test"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}
