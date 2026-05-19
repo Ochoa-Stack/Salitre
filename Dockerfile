@@ -1,18 +1,18 @@
 FROM php:8.2-fpm
 
-# Instalamos Nginx y extensiones
+# Instalamos Nginx y extensiones PHP
 RUN apt-get update && apt-get install -y nginx \
     && docker-php-ext-install pdo pdo_mysql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copiamos el código PRIMERO
+# Copiamos código
 WORKDIR /var/www/html
-COPY . /var/www/html/
+COPY . .
 
-# Configuración de Nginx
+# Configuración de Nginx (puerto 8080 por defecto)
 RUN echo 'server { \
     listen 8080; \
-    server_name localhost; \
+    server_name _; \
     root /var/www/html; \
     index index.php index.html; \
     \
@@ -26,21 +26,17 @@ RUN echo 'server { \
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; \
         include fastcgi_params; \
     } \
-    \
-    location ~ /\.ht { \
-        deny all; \
-    } \
 }' > /etc/nginx/sites-available/default \
     && ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
     && rm -f /etc/nginx/sites-enabled/default
 
-# Permisos
+# Permisos correctos (aplicados DESPUÉS de copiar)
 RUN chown -R www-data:www-data /var/www/html \
     && find /var/www/html -type d -exec chmod 755 {} \; \
     && find /var/www/html -type f -exec chmod 644 {} \; \
     && chmod -R 777 /var/www/html/assets/img/client/espacios
 
-# Inicio con el comando CORRECTO: php-fpm (no php-fpm8.2)
-CMD bash -c "sed -i \"s/listen 8080/listen \${PORT}/g\" /etc/nginx/sites-available/default && php-fpm -D && nginx -g 'daemon off;'"
+# Inicio de servicios
+CMD php-fpm -D && nginx -g 'daemon off;'
 
-EXPOSE ${PORT}
+EXPOSE 8080
