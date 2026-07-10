@@ -1,11 +1,11 @@
 name: Continuous Integration
 
-# Configuramos los disparadores para nuestras ramas principales
+# Configuración de los disparadores para las ramas principales
 on:
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   audit:
@@ -21,12 +21,10 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer
-          # Activamos las extensiones críticas para conectar la lógica
           extensions: pdo_mysql
 
-      - name: Instalamos las dependencias de control de calidad
+      - name: Instalación de las dependencias de control de calidad
         run: composer install --prefer-dist --no-progress
 
-      - name: Ejecutamos el análisis estático y formateo estricto
-        # Si PHPStan detecta errores, bloquearemos el merge automáticamente
+      - name: Ejeución de el análisis estático y formateo estricto
         run: composer run check
