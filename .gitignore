@@ -16,3 +16,6 @@ Thumbs.db
 /logs/
 /cache/
 /docs/coverage/
+
+.env.testing
+.phpunit.result.cache
