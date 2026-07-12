@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Renombrar `deploy_guide.md` a `DEPLOY_GUIDE.md` para seguir convención de nombres en mayúsculas
+- Excluir `.env.testing` del versionado por contener credenciales de entorno local
+
 ### Fixed
 
 - Corregir lógica de fechas en vista v_ocupacion_diaria para contar reservas durante toda su estancia (rango fecha_entrada a fecha_salida) en lugar de solo en la fecha de entrada, respetando el agrupamiento macro por tipo de espacio.
